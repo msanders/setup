@@ -1,0 +1,22 @@
+# -*- mode: sh -*- vim:ft=sh
+
+alias battery="pmset -g ps"
+alias cat="bat"
+alias cdfinder="fish -c 'cd (finderpath)'"
+alias cman="man -S2:3"
+alias finderpath='osascript -e "tell app \"Finder\" to POSIX path of (insertion location as alias)"'
+alias hide="chflags hidden"
+alias icloud="brctl monitor ~/iCloud/"
+alias irb='irb --readline -r irb/completion'
+alias lastsha='git rev-parse HEAD | cut -c1-7'
+alias lock="sudo chflags uchg"
+alias restartwifi='sh -c "sudo ifconfig en0 down; sudo ifconfig en0 up"'
+alias rf="fd"
+alias scratch="cd ~/Scratch"
+alias sizeof="du -sh"
+alias snooze="open -a /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app"
+alias suspend='sh -c "/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend"'
+alias unhide="chflags nohidden"
+alias unlock="sudo chflags nouchg"
+alias up="ping 8.8.8.8"
+alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'

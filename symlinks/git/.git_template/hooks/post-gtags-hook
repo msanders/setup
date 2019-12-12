@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+.git/hooks/gtags >/dev/null 2>&1 &
+

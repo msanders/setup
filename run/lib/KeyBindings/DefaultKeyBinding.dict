@@ -1,0 +1,66 @@
+//
+// Adopted from
+// http://www.deepsky.com/~misaka/MacOSX/DefaultKeyBinding.dict
+//
+// Original bindings grabbed from Mike Ferris of lorax.com as shipped
+// with his TextExtras package.  Modified by Mishka Gorodnitzky
+// <misaka@pobox.com>.  The following note is kept from those original
+// bindings.
+//
+// C-a and C-e bindings added, thanks to Patrick Linskey. (11/05/2003)
+//
+
+// This property list has not been converted to XML because XML
+// key-binding files are really nasty to try to read in a text editor...
+// PropertyListEditor using the "Show Strings as ASCII" option does OK,
+// but even that will put in real carriage returns and tabs and stuff
+// instead of backslash escape sequences and you also lose the useful
+// comments that way.
+
+// When editing this file remember to be carefull with your syntax.
+// If you forget a semicolon or inadvertently insert a
+// control-character (due to testing while editing this file in
+// TextEdit, for example) then this file will be silently ignored and
+// can lead to puzzling behaviour while testing changes.
+{
+    "~f" = "moveWordForward:";
+    "~b" = "moveWordBackward:";
+    "~<" = "moveToBeginningOfDocument:";
+    "~>" = "moveToEndOfDocument:";
+    "~v" = "pageUp:";
+    "^v" = "pageDown:";
+    "~d" = "deleteWordForward:";
+    "^w" = "deleteWordBackward:";
+    "~\010" = "deleteWordBackward:"; /* M-backspace */
+    "~a" = "moveToBeginningOfParagraph:";
+    "~e" = "moveToEndOfParagraph:";
+    "^/" = "undo:";
+    "^_" = "undo:";
+    "~c" = "capitalizeWord:";
+    "~u" = "uppercaseWord:";
+    "~l" = "lowercaseWord:";
+    "^t" = "transpose:";
+    "~t" = "transposeWords:";
+    "~/" = "complete:";
+    "^g" = "_cancelKey:";
+    "^a" = "moveToBeginningOfLine:";
+    "^e" = "moveToEndOfLine:";
+    "^i" = "insertTab:";
+	"^u" = "deleteToBeginningOfLine:";
+	"^l" = "centerSelectionInVisibleArea:";
+
+    // Bind some ^x combos.
+    "^x" = {
+		"^x" = "swapWithMark:"; /* C-x C-x */
+		"^m" = "selectToMark:"; /* C-x C-m */
+		"^s" = "save:"; /* C-x C-s */
+		"^w" = "saveAs:"; /* C-x C-w */
+    };
+
+    // Mark-point stuff (Emacs-style mark and point bindings are
+    // implemented but not bound by default. In the text system the
+    // mark and point are ranges, not just locations. The "point" is
+    // the selected range.)
+    "^@" = "setMark:";
+    "^ " = "setMark:";
+}

@@ -1,0 +1,42 @@
+[user]
+	name = Michael Sanders
+	email = michael.sanders@fastmail.com
+[core]
+	whitespace = trailing-space,space-before-tab
+	excludesfile = ~/.gitignore
+	pull = pull --ff-only
+[push]
+	default = current
+[mergetool]
+	keepBackup = false
+	prompt = false
+[difftool]
+	prompt = false
+[diff]
+	tool = ediff
+	algorithm = histogram
+[merge]
+	tool = opendiff
+[diff "swift"]
+	xfuncname = "^ *((\\w+ +)*(((class|struct|enum|protocol|extension|func|(de)?init)\\b.*)|((var|let)\\b.*\\{)))$"
+[difftool "ediff"]
+	cmd = emacsclient --eval \"(ediff-files \\\"$LOCAL\\\" \\\"$REMOTE\\\")\" && open -a Emacs
+[credential]
+	helper = osxkeychain
+[commit]
+	gpgsign = true
+[alias]
+	gtags = !.git/hooks/gtags
+	graph = log --oneline --decorate --graph
+	upgraph = log --oneline --decorate --graph @{upstream}..
+	in = diff --staged
+	out = diff
+	eeny = add --patch
+	smuggle = commit --amend -C HEAD
+	start = checkout -b
+	restart = checkout -B
+	unstage = reset HEAD
+[init]
+	templatedir = ~/.git_template
+[merge "ours"]
+	driver = true
