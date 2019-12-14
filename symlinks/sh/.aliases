@@ -19,4 +19,5 @@ alias suspend='sh -c "/System/Library/CoreServices/Menu\\ Extras/User.menu/Conte
 alias unhide="chflags nohidden"
 alias unlock="sudo chflags nouchg"
 alias up="ping 8.8.8.8"
+alias vim="nvim"
 alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
