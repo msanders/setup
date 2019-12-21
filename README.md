@@ -4,7 +4,7 @@ Run this:
 
 ```sh
 $ git clone --recursive https://github.com/msanders/setup ~/.dotfiles
-$ ~/.dotfiles/zero/setup
+$ caffeinate ~/.dotfiles/zero/setup
 ```
 
 This will run the appropriate installers and symlink the contained files to your

@@ -28,6 +28,14 @@ osascript -e 'tell application "Terminal"' \
           -e "close window 1" \
           -e "end tell"
 
+echo "Updating Dock..."
+
+dockutil --remove all --no-restart
+dockutil --add /Applications/Firefox.app --no-restart
+dockutil --add /Applications/Emacs.app --no-restart
+dockutil --add /Applications/Utilities/Terminal.app --no-restart
+dockutil --add ~/Downloads --display stack # Implicitly restarts the Dock.
+
 echo "Installing custom utilities..."
 
 "$SCRIPT_DIR/../lib/Grayscale/install"
