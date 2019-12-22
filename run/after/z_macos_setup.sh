@@ -36,6 +36,31 @@ dockutil --add /Applications/Emacs.app --no-restart
 dockutil --add /Applications/Utilities/Terminal.app --no-restart
 dockutil --add ~/Downloads --display stack # Implicitly restarts the Dock.
 
+echo "Updating default application handlers..."
+
+set -x
+duti -s org.gnu.Emacs com.apple.property-list all
+duti -s org.gnu.Emacs com.apple.xcode.strings-text all
+duti -s org.gnu.Emacs com.netscape.javascript-source all
+duti -s org.gnu.Emacs net.daringfireball.markdown all
+duti -s org.gnu.Emacs public.c-header all
+duti -s org.gnu.Emacs public.c-plus-plus-source all
+duti -s org.gnu.Emacs public.c-source all
+duti -s org.gnu.Emacs public.data all
+duti -s org.gnu.Emacs public.json all
+duti -s org.gnu.Emacs public.objective-c-source all
+duti -s org.gnu.Emacs public.perl-script all
+duti -s org.gnu.Emacs public.plain-text all
+duti -s org.gnu.Emacs public.precompiled-c-header all
+duti -s org.gnu.Emacs public.python-script all
+duti -s org.gnu.Emacs public.ruby-script all
+duti -s org.gnu.Emacs public.shell-script all
+duti -s org.gnu.Emacs public.swift-source all
+duti -s org.gnu.Emacs public.unix-executable all
+duti -s org.gnu.Emacs public.xml all
+duti -s org.gnu.Emacs public.yaml all
+set +x
+
 echo "Installing custom utilities..."
 
 "$SCRIPT_DIR/../lib/Grayscale/install"
