@@ -3,11 +3,6 @@ set -o errexit -o nounset
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-echo "Disabling netbiosd."
-set -x
-sudo launchctl disable system/netbiosd
-set +x
-
 if [ ! -d "$HOME/iCloud" ]; then
     echo "Symlinking iCloud."
     set -x
