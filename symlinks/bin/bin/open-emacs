@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -o errexit -o pipefail
-if [[ -z "$EMACS" ]] && ! pgrep -q -- "Emacs"; then
-    open -a Emacs "$@"
-    echo "Waiting for Emacs to start..."
-elif [[ ! -z "$1" ]]; then
-    emacsclient -n "$@"
-fi
