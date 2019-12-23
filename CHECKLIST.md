@@ -46,6 +46,8 @@ Then, in no particular order:
 
 - Firefox > View > Toolbars > Customize... > Density > Compact.
 
+- Firefox > about:config > browser.tab.warnOnClose > true.
+
 - Firefox > about:config > toolkit.cosmeticAnimations.enabled > false.
 
 - Flux > Preferences > Sunset > Normal/Daylight. (I use Night Shift for sunset,
