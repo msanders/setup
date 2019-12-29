@@ -1,5 +1,6 @@
 # -*- mode: sh -*- vim:ft=sh
 
+alias bashfmt="shfmt -s -i=4 -ci -ln=bash"
 alias battery="pmset -g ps"
 alias cat="bat"
 alias cdfinder="fish -c 'cd (finderpath)'"
@@ -10,6 +11,7 @@ alias icloud="brctl monitor ~/iCloud/"
 alias irb='irb --readline -r irb/completion'
 alias lastsha='git rev-parse HEAD | cut -c1-7'
 alias lock="sudo chflags uchg"
+alias pshfmt="shfmt -s -i=4 -ci -ln=posix"
 alias restartwifi='sh -c "sudo ifconfig en0 down; sudo ifconfig en0 up"'
 alias rf="fd"
 alias scratch="cd ~/Scratch"

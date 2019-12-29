@@ -2,10 +2,10 @@
 set -o errexit -o nounset
 
 export RBENV_ROOT=/usr/local/var/rbenv
-if command -v rbenv > /dev/null; then
-    eval "$(rbenv init -)";
+if command -v rbenv >/dev/null; then
+    eval "$(rbenv init -)"
 else
-    >&2 echo "Error: rbenv not installed"
+    echo >&2 "Error: rbenv not installed"
     exit 1
 fi
 

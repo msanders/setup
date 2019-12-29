@@ -10,4 +10,4 @@ if [ $# -lt 1 ]; then
     exit 1
 fi
 
-emacsclient --alternate-editor=vim --quiet 2>/dev/null "$@"
+emacsclient --alternate-editor=vim --quiet "$@" 2>/dev/null

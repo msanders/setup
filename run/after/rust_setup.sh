@@ -13,7 +13,7 @@ mkdir -p "$COMPLETIONS_DIR"
 rustup default stable
 rustup install nightly
 rustup update
-rustup completions fish > "$COMPLETIONS_DIR/rustup.fish"
+rustup completions fish >"$COMPLETIONS_DIR/rustup.fish"
 rustup component add rust-src
 rustup component add rustfmt
 

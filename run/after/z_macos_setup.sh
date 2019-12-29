@@ -19,9 +19,9 @@ echo "Setting default Terminal theme..."
 open -a Terminal "$SCRIPT_DIR/../lib/Zenburn.terminal"
 sleep 2 # Wait a bit for theme to install.
 osascript -e 'tell application "Terminal"' \
-          -e 'set default settings to settings set "Zenburn"' \
-          -e "close window 1" \
-          -e "end tell"
+    -e 'set default settings to settings set "Zenburn"' \
+    -e "close window 1" \
+    -e "end tell"
 
 echo "Updating Dock..."
 
