@@ -21,3 +21,6 @@ For a full list of steps done on new machines, see
 
 This repo uses [zero.sh](https://github.com/zero-sh/zero.sh) for system setup
 and configuration.
+
+Licensed under the MIT License, except where otherwise noted (e.g., Emacs files
+are licensed under GPLv3). See [LICENSE](LICENSE) for more information.
