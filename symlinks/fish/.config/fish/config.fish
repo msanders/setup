@@ -1,110 +1,83 @@
-set --export DEVELOPER_DIR "/Applications/Xcode.app/Contents/Developer"
-set --export EDITOR "emc"
-set --export GITHUB_USERNAME msanders
-set --export GREP_OPTIONS "--color=auto"
-set --export LANG C
-set --export LC_ALL en_US.UTF-8
-set --export LSCOLORS cxfxexexexegedabagcxcx
-set --export MANPAGER "sh -c 'col -bx | bat -l man -p'"
-set --export PATH "$HOME/bin" "$HOME/.local/bin" "/usr/local/bin" "/usr/local/sbin" $PATH
-set --export GTAGSLABEL "pygments"
-set --export fish_greeting
-set --export theme_color_scheme zenburn
-set __fish_git_prompt_show_informative_status 'yes'
-
-if test -f $HOME/.aliases
-    . $HOME/.aliases
-end
-
-if test -f $HOME/.secrets
-    . $HOME/.secrets
-end
-
-set fish_color_normal normal
-set fish_color_command ffd700
-set fish_color_quote normal
-set fish_color_redirection normal
-set fish_color_end ffffff
-set fish_color_error ff5f5f --bold
-set fish_color_param ffff5f
-set fish_color_comment 87ffff
-set fish_color_match cyan
-set fish_color_search_match ffffff --background=005f00
-set fish_color_operator cyan
-set fish_color_escape cyan
-set fish_color_cwd green
-
-# rbenv support
-set -gx RBENV_ROOT /usr/local/var/rbenv
-if which rbenv >/dev/null
-    . (rbenv init - fish|psub)
-end
-
-# pyenv support
-set --export PYENV_ROOT "$HOME/.pyenv"
-set --export PATH "$PYENV_ROOT/bin" $PATH
-if which pyenv >/dev/null
-    mkdir -p "$PYENV_ROOT/bin"
-    status --is-interactive; and . (pyenv init -|psub)
-end
-
-# Cask
-set --export PATH "$HOME/.cask/bin" $PATH
-
-set --local CARGO_PATH "$HOME/.cargo/bin"
-if test -d $CARGO_PATH
-    set --export PATH $CARGO_PATH $PATH
-end
-
-if which rustc > /dev/null
-    set --export DYLD_LIBRARY_PATH (rustc --print sysroot)/lib $DYLD_LIBRARY_PATH
-	set --export RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
-end
-
-# Add Postgres.app to PATH
-set --export POSTGRES_DOT_APP "/Applications/Postgres.app"
-if test -d "$POSTGRES_DOT_APP"
-    set --export PATH "/Applications/Postgres.app/Contents/Versions/latest/bin" $PATH
-end
-
-function notify --description "Write message to system notification"
-    if [ $argv ]; set --local message $argv; else; set message "Done running task"; end
-    terminal-notifier -title "✅ Done" -message $message -timeout 5
-end
-
-function md --description "Make directory and switch to it"
-    mkdir -p $argv && cd $argv
-end
-
-# From https://stackoverflow.com/a/39891882
-function read_confirm --description "Ask user for a confirmation" --argument prompt
-    if test -z "$prompt"
-        set prompt "Continue?"
+# Checking for login status here allows for faster start times when using tmux.
+# See:
+# https://posts.mksanders.org/instant-pyenv-rbenv-startup-times-with-tmux
+if status is-login
+    # pyenv
+    if command -v pyenv >/dev/null
+        pyenv init - --no-rehash fish | source
+        and funcsave pyenv
+        and sh -c 'pyenv rehash 2>/dev/null &'
     end
 
-    while true
-        read -P "$prompt [y/N]: " -l confirm
+    # rbenv
+    if command -v rbenv >/dev/null
+        rbenv init - --no-rehash fish | source
+        and funcsave rbenv
+        and sh -c 'rbenv rehash 2>/dev/null &'
+    end
 
-        switch $confirm
-            case Y y
-                return 0
-            case '' N n
-                return 1
+    set --export DEVELOPER_DIR "/Applications/Xcode.app/Contents/Developer"
+    set --export EDITOR "emc"
+    set --export GTAGSLABEL "pygments"
+    set --export HOMEBREW_AUTO_UPDATE_SECS 3600
+    set --export LANG en_US.UTF-8
+    set --export LANGUAGE en_US.UTF-8
+    set --export LC_ALL en_US.UTF-8
+    set --export MANPAGER "sh -c 'col -bx | bat -l man -p'"
+    set --export PATH "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.cask/bin" $PATH
+
+    if status is-interactive
+        if test -f $HOME/.aliases
+            source $HOME/.aliases
+
+            # Export aliases for lazy-loading in child shells.
+            for alias in (rg -o "^alias \b\w+\b" $HOME/.aliases | cut -c 7-)
+                funcsave $alias
+            end
+        end
+
+        if test -f $HOME/.functions.fish
+            source $HOME/.functions.fish
+
+            # Export functions for lazy-loading in child shells.
+            for func in (rg -o "function \b\w+\b" $HOME/.functions.fish | cut -c 10-)
+                funcsave $func
+            end
+        end
+
+        # Enable hybrid vi/emacs bindings.
+        if ! test "$fish_key_bindings" = "fish_hybrid_key_bindings"
+            fish_hybrid_key_bindings
         end
     end
 end
 
+if status is-interactive
+    # Disable greeting.
+    set --export fish_greeting
+    function fish_greeting; end
 
-function rm_ds_store --description "Remove .DS_Store files recursively from a directory" --argument dir
-    set --local files (fd --hidden '^\.DS_Store$' --no-ignore-vcs $dir)
-    if test -n "$files"
-        echo "Found $files"
-        if read_confirm "Remove files?"
-            rm $files
-        end
-    else
-        echo "No .DS_Store files found."
+    # Use fd to leave insert mode.
+    function fish_user_key_bindings
+        bind -M insert -m default fd backward-char force-repaint
     end
-end
 
-fish_hybrid_key_bindings
+    # Disable dated history in bobthefish prompt.
+    set -g theme_display_date no
+
+    # Apply theme.
+    set --export theme_color_scheme zenburn
+    set fish_color_normal normal
+    set fish_color_command ffd700
+    set fish_color_quote normal
+    set fish_color_redirection normal
+    set fish_color_end ffffff
+    set fish_color_error ff5f5f --bold
+    set fish_color_param ffff5f
+    set fish_color_comment 87ffff
+    set fish_color_match cyan
+    set fish_color_search_match ffffff --background=005f00
+    set fish_color_operator cyan
+    set fish_color_escape cyan
+    set fish_color_cwd green
+end
