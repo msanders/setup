@@ -60,6 +60,25 @@
 (add-hook 'swift-mode-hook #'michaelsanders-better-defaults/icmd-init)
 (add-hook 'company-mode-hook #'company-ycmd-setup)
 
+(defun michaelsanders/gtags-env-patch (orig &rest args)
+  (if-let* ((project-root (file-truename (locate-dominating-file "." ".git")))
+            (git-dir (expand-file-name ".git" project-root))
+            (process-environment (append
+                                  (list (format "GTAGSROOT=%s" project-root)
+                                        (format "GTAGSDBPATH=%s" git-dir))
+                                  process-environment)))
+      (apply orig args)
+    (apply orig args)))
+
+(advice-add #'helm-gtags-find-tag :around #'michaelsanders/gtags-env-patch)
+(advice-add #'helm-gtags-dwim :around #'michaelsanders/gtags-env-patch)
+(advice-add #'helm-gtags-find-tag-other-window
+            :around
+            #'michaelsanders/gtags-env-patch)
+
+(spacemacs|define-jump-handlers swift-mode helm-gtags-dwim)
+(spacemacs|define-jump-handlers rust-mode helm-gtags-dwim)
+
 ;; Workaround from
 ;; https://github.com/syl20bnr/spacemacs/issues/5634#issuecomment-204340185
 ;; to auto-detect objc files.

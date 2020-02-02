@@ -1,2 +1,1 @@
-#!/bin/sh
-.git/hooks/gtags >/dev/null 2>&1 &
+./post-gtags-hook

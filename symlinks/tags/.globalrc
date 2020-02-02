@@ -1,0 +1,53 @@
+#
+# Copyright (c) 1998, 1999, 2000, 2001, 2002, 2003, 2010, 2011, 2013,
+#	2015, 2016, 2017
+#	Tama Communications Corporation
+#
+# This file is part of GNU GLOBAL.
+#
+# This file is free software; as a special exception the author gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY, to the extent permitted by law; without even the
+# implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+#
+# *
+# Configuration file for GNU GLOBAL source code tagging system.
+#
+# Basically, GLOBAL doesn't need this configuration file ('gtags.conf'),
+# because it has default values in itself. If you have this file as
+# '/etc/gtags.conf' or "$HOME/.globalrc" then GLOBAL overwrite the default
+# values with values in the file.
+# Configuration file is also necessary to use plug-in parsers.
+#
+# The format is similar to termcap(5). You can specify a target with
+# GTAGSLABEL environment variable. Default target is 'default'.
+#
+# If you want to have default values for yourself, it is recommended to
+# use the following method:
+#
+# default:\
+#	:tc=default@~/.globalrc:\	<= includes default values from ~/.globalrc.
+#	:tc=native:
+#
+# Please refer to gtags.conf(5) for details.
+#
+
+default:\
+    :tc=default@/usr/local/etc/gtags.conf:
+ctags:\
+    :tc=ctags@/usr/local/etc/gtags.conf:
+new-ctags:\
+    :tc=new-ctags@/usr/local/etc/gtags.conf:
+pygments:\
+    :tc=pygments@/usr/local/etc/gtags.conf:\
+    :tc=user-custom-pygments-parser:
+
+user-custom-pygments-parser|Pygments plug-in parser:\
+	:tc=common@/usr/local/etc/gtags.conf:\
+    :langmap=Swift\:.swift:\
+    :gtags_parser=Swift\:$pygmentslib:\
+    :pygmentslib=$libdir/gtags/pygments-parser.la:
+    :skip=*.xcodeproj,*.xcplayground,*.xcworkspace:
