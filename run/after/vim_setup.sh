@@ -1,12 +1,12 @@
 #!/bin/sh
 set -o errexit -o nounset
 
-VIM_DIR="$HOME/.vim"
-VUNDLE_DIR="$VIM_DIR/bundle/Vundle.vim"
+VIM_PLUG="$HOME/.vim/autoload/plug.vim"
 
-if [ ! -d "$VUNDLE_DIR" ]; then
-    mkdir -p "$VIM_DIR/bundle"
-    git clone https://github.com/gmarik/Vundle.vim.git "$VUNDLE_DIR"
+if [ ! -f "$VIM_PLUG" ]; then
+    echo "Downloading vim-plug..."
+    curl -#fLo "$VIM_PLUG" --create-dirs \
+         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
-nvim +PluginUpdate +qall
+nvim +PlugUpdate +PlugUpgrade +qall
