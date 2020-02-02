@@ -1,29 +1,25 @@
-# If not running interactively, don't do anything
-if [ -z "$PS1" ]; then
-    return;
-fi
-
 # Load aliases.
 if [ -f "$HOME/.aliases" ]; then
     # shellcheck source=/dev/null
     source "$HOME/.aliases"
 fi
 
-export PS1='\u:\W $ '
-
-# Encoding
-export LANG=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
 # Colors
 export CLICOLOR=1
-export GREP_OPTIONS='--color=auto'
-export LSCOLORS=cxfxexexexegedabagcxcx
+
+# Prompt
+PS1='\u:\W $ '
 
 # History
-export HISTCONTROL=erasedups,ignorespace
-export HISTSIZE=1000
+HISTCONTROL=ignoreboth
+HISTSIZE=1024
+HISTTIMEFORMAT="%F %T "
+
+# Store history immediately rather than at end of session.
+PROMPT_COMMAND="history -a"
 
 # Append to history on shell exit rather than overwrite.
 shopt -s histappend
+
+# Adjust saved commands to fit on one line.
+shopt -s cmdhist
