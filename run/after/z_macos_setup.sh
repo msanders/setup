@@ -56,6 +56,17 @@ duti -s org.gnu.Emacs public.xml all
 duti -s org.gnu.Emacs public.yaml all
 set +x
 
+echo "Applying icons..."
+
+if ! command -v chicon >/dev/null; then
+    set -x
+    brew install https://raw.githubusercontent.com/okdana/chicon/d602584/pkg/chicon.rb
+    set +x
+fi
+
+chicon "$SCRIPT_DIR/../lib/Alacritty.icns" /Applications/Alacritty.app
+chicon "$SCRIPT_DIR/../lib/Emacs.icns" /Applications/Emacs.app
+
 echo "Installing custom utilities..."
 
 "$SCRIPT_DIR/../lib/Grayscale/install"
