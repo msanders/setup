@@ -10,17 +10,23 @@ USER="$(whoami)"
 PLIST="$AGENT_DIR/$DOMAIN.plist"
 SUPPORT_DIR="$HOME/Library/Application Support/$TARGET"
 
-mkdir -p "$SUPPORT_DIR"
-mkdir -p "$AGENT_DIR"
+main() (
+    mkdir -p "$SUPPORT_DIR"
+    mkdir -p "$AGENT_DIR"
 
-swiftc "$SCRIPT_DIR/Launchterm.swift" -o "$SUPPORT_DIR/$TARGET" -O \
-                                   -whole-module-optimization
+    cd "$SCRIPT_DIR"
+    echo "Building Launchterm..."
+    swift build -c release -Xswiftc -Osize
+    cp .build/release/Launchterm "$SUPPORT_DIR/$TARGET"
+    strip "$SUPPORT_DIR/$TARGET"
+    sed -e "s/{USER}/$USER/" "$SCRIPT_DIR/$DOMAIN.template.plist" > "$PLIST"
 
-sed -e "s/{USER}/$USER/" "$SCRIPT_DIR/$DOMAIN.template.plist" > "$PLIST"
+    if launchctl list | grep -Fq "$DOMAIN"; then
+        launchctl unload "$PLIST" 2>/dev/null
+    fi
 
-if launchctl list | grep -Fq "$DOMAIN"; then
-    launchctl unload "$PLIST"
-fi
+    launchctl load -w "$PLIST"
+    echo "Installed $TARGET."
+)
 
-launchctl load "$PLIST"
-echo "Installed $TARGET."
+main
