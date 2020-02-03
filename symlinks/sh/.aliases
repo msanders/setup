@@ -39,6 +39,9 @@ alias sudoedit="sudo --edit"
 # Immediately set display to sleep.
 alias snooze="pmset displaysleepnow"
 
+# Shorthand to fully format a Swift file / directory.
+alias swiftfmt="sh -c 'swiftlint autocorrect \"\$0\" && swiftformat \"\$0\"'"
+
 # Unhide a file from Finder on macOS.
 alias unhide="chflags nohidden"
 
