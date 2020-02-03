@@ -68,3 +68,7 @@
 (sp-pair "{" nil :unless '(sp-point-before-word-p sp-point-before-same-p))
 
 (setq-default evil-escape-delay 0.2)
+
+;; Etc.
+
+(global-set-key (kbd "<s-return>") #'spacemacs/toggle-fullscreen-frame)

@@ -50,22 +50,27 @@
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 ;; Fill column indicator settings.
+(add-hook 'c++-mode-hook #'80-column-rule)
 (add-hook 'c-mode-hook #'80-column-rule)
 (add-hook 'cc-mode-hook #'80-column-rule)
-(add-hook 'c++-mode-hook #'80-column-rule)
 (add-hook 'elm-mode-hook #'80-column-rule)
-(add-hook 'emacs-lisp-mode-hook #'80-column-rule)
-(add-hook 'haskell-mode-hook #'100-column-rule)
+(add-hook 'fish-mode-hook #'100-column-rule)
+(add-hook 'haskell-mode-hook #'80-column-rule)
 (add-hook 'js2-mode-hook #'100-column-rule)
 (add-hook 'lisp-mode-hook #'80-column-rule)
 (add-hook 'markdown-mode-hook #'80-column-rule)
 (add-hook 'python-mode-hook #'80-column-rule)
+(add-hook 'ruby-mode-hook #'80-column-rule)
 (add-hook 'rust-mode-hook #'100-column-rule)
-(add-hook 'ruby-mode-hook #'120-column-rule)
 (add-hook 'scheme-mode-hook #'80-column-rule)
 (add-hook 'sh-mode-hook #'80-column-rule)
-(add-hook 'swift-mode-hook #'120-column-rule)
+(add-hook 'swift-mode-hook #'100-column-rule)
 (add-hook 'text-mode-hook #'80-column-rule)
+
+;; Use default fill-column for Elisp comments.
+(add-hook 'emacs-lisp-mode-hook (lambda ()
+                                  (80-column-rule)
+                                  (setq-local fill-column 70)))
 
 ;; Helm dash hooks.
 (add-hook 'c-mode-hook
