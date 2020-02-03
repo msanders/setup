@@ -25,6 +25,7 @@ if status is-login
     set --export LC_ALL en_US.UTF-8
     set --export MANPAGER "sh -c 'col -bx | bat -l man -p'"
     set --export PATH "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.cask/bin" $PATH
+    set --export SHELLCHECK_OPTS "--external-sources"
 
     if status is-interactive
         if test -f $HOME/.aliases
