@@ -1,25 +1,52 @@
 # -*- mode: sh -*- vim:ft=sh
 
+# Format bash script.
 alias bashfmt="shfmt -s -i=4 -ci -ln=bash"
-alias battery="pmset -g ps"
+
+# Prefer bat over cat.
 alias cat="bat"
-alias cdfinder="fish -c 'cd (finderpath)'"
-alias cman="man -S2:3"
-alias finderpath='osascript -e "tell app \"Finder\" to POSIX path of (insertion location as alias)"'
+
+ # Change to path shown in Finder.
+alias cdfinder='fish -c "cd (finderpath)"'
+
+# Print path currently shown in Finder.
+alias finderpath="osascript -e 'tell app \"Finder\" to POSIX path of (insertion location as alias)'"
+
+# Hide a file from Finder on macOS.
 alias hide="chflags hidden"
-alias icloud="brctl monitor ~/iCloud/"
-alias irb='irb --readline -r irb/completion'
-alias lastsha='git rev-parse HEAD | cut -c1-7'
+
+# Lock file on macOS.
 alias lock="sudo chflags uchg"
+
+# Format POSIX shell script.
 alias pshfmt="shfmt -s -i=4 -ci -ln=posix"
-alias restartwifi='sh -c "sudo ifconfig en0 down; sudo ifconfig en0 up"'
+
+# Restart Wi-Fi on macOS.
+alias restartwifi="sudo ifconfig en0 down; sudo ifconfig en0 up"
+
+# fd is set to escape into normal mode on my shell with modal editing enabled.
 alias rf="fd"
-alias scratch="cd ~/Scratch"
+
+# Print human-readable size of file or directory.
 alias sizeof="du -sh"
-alias snooze="open -a /System/Library/Frameworks/ScreenSaver.framework/Versions/A/Resources/ScreenSaverEngine.app"
-alias suspend='sh -c "/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend"'
+
+# Safely edit a file as root.
+alias sudoedit="sudo --edit"
+
+# Immediately set display to sleep.
+alias snooze="pmset displaysleepnow"
+
+# Unhide a file from Finder on macOS.
 alias unhide="chflags nohidden"
+
+# Unlock a file on macOS.
 alias unlock="sudo chflags nouchg"
+
+# Confirm machine is connected to Internet (Google).
 alias up="ping 8.8.8.8"
+
+# Prefer Neovim over Vim.
 alias vim="nvim"
-alias whatismyip='dig +short myip.opendns.com @resolver1.opendns.com'
+
+# Print current IP address.
+alias whatismyip="dig +short myip.opendns.com @resolver1.opendns.com"
