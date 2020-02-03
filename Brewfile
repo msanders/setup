@@ -104,6 +104,9 @@ brew "tealdeer"
 # Send macOS User Notifications from the command-line
 brew "terminal-notifier"
 
+# Granddaddy of HTML tools, with support for modern standards
+brew "tidy-html5"
+
 # Terminal multiplexer
 brew "tmux"
 

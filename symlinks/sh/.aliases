@@ -15,6 +15,9 @@ alias finderpath="osascript -e 'tell app \"Finder\" to POSIX path of (insertion 
 # Hide a file from Finder on macOS.
 alias hide="chflags hidden"
 
+# Format HTML file.
+alias htmlfmt="tidy -ashtml --indent auto --indent-spaces 4 --tidy-mark no -utf8 --wrap 0"
+
 # Lock file on macOS.
 alias lock="sudo chflags uchg"
 
