@@ -21,6 +21,9 @@ alias htmlfmt="tidy -ashtml --indent auto --indent-spaces 4 --tidy-mark no -utf8
 # Lock file on macOS.
 alias lock="sudo chflags uchg"
 
+# Open repo in Magit.
+alias magit='emacsclient --eval "(magit-status)" >/dev/null && open -a Emacs'
+
 # Format POSIX shell script.
 alias pshfmt="shfmt -s -i=4 -ci -ln=posix"
 
