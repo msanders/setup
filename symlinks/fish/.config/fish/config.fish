@@ -1,6 +1,7 @@
 # Checking for login status here allows for faster start times when using tmux.
 # See:
-# https://posts.mksanders.org/instant-pyenv-rbenv-startup-times-with-tmux
+# - https://posts.mksanders.org/instant-pyenv-rbenv-startup-times-with-tmux
+# - https://posts.mksanders.org/faster-fish-startup-times
 if status is-login
     # pyenv
     if command -v pyenv >/dev/null
@@ -25,6 +26,7 @@ if status is-login
     set --export LC_ALL en_US.UTF-8
     set --export MANPAGER "sh -c 'col -bx | bat -l man -p'"
     set --export PATH "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.cask/bin" $PATH
+    set --export PYENV_ROOT "$HOME/.pyenv"
     set --export SHELLCHECK_OPTS "--external-sources"
 
     if status is-interactive
