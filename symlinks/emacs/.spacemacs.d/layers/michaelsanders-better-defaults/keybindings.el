@@ -56,19 +56,14 @@
 (define-key evil-normal-state-map "+" #'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map "-" #'evil-numbers/dec-at-pt)
 
-(global-set-key (kbd "RET") #'newline-and-indent)
-(global-set-key (kbd "s-{") #'next-multiframe-window)
-(global-set-key (kbd "s-}") #'previous-multiframe-window)
-(global-set-key (kbd "s-t") #'make-frame)
-(global-set-key (kbd "s-w") #'delete-frame)
-
 ;; Smartparens
-(sp-pair "(" nil :unless '(sp-point-before-word-p sp-point-before-same-p))
-(sp-pair "[" nil :unless '(sp-point-before-word-p sp-point-before-same-p))
-(sp-pair "{" nil :unless '(sp-point-before-word-p sp-point-before-same-p))
+(with-eval-after-load 'smartparens
+  (sp-pair "(" nil :unless '(sp-point-before-word-p sp-point-before-same-p))
+  (sp-pair "[" nil :unless '(sp-point-before-word-p sp-point-before-same-p))
+  (sp-pair "{" nil :unless '(sp-point-before-word-p sp-point-before-same-p)))
 
-(setq-default evil-escape-delay 0.2)
+(setq evil-escape-delay 0.2)
 
 ;; Etc.
 
-(global-set-key (kbd "<s-return>") #'spacemacs/toggle-fullscreen-frame)
+(global-set-key (kbd "<H-return>") #'spacemacs/toggle-fullscreen-frame)

@@ -21,33 +21,23 @@
 ;; <https://www.gnu.org/licenses/>.
 ;;
 
-;; Make tooltips appear in echo area.
-(tooltip-mode -1)
-
 ;; Disable bold fonts.
 (set-face-bold-p 'bold nil)
 
-;; Open new files in same frame on Mac.
-(setq pop-up-windows nil)
+;; Disable modeline icons.
+(setq doom-modeline-icon nil)
 
-(setq neo-show-hidden-files nil)
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-(setq-default git-magit-status-fullscreen t)
-(defalias 'yes-or-no-p 'y-or-n-p)
-(setq delete-by-moving-to-trash t)
-(setq display-time-24hr-format t)
-(setq font-lock-maximum-decoration t)
-(setq trash-directory "~/.Trash")
+;; Enable jump to source for elisp functions.
 (setq find-function-C-source-directory "~/src/etc/emacs/src")
-(display-time-mode)
+
+;; Display magit status in full screen.
+(setq git-magit-status-fullscreen t)
 
 ;; Workaround for https://github.com/syl20bnr/spacemacs/issues/5435.
 ;; https://github.com/syl20bnr/spacemacs/issues/5435#issuecomment-195862080
 (add-hook 'spacemacs-buffer-mode-hook
           (lambda ()
             (set (make-local-variable 'mouse-1-click-follows-link) nil)))
-
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 ;; Fill column indicator settings.
 (add-hook 'c++-mode-hook #'80-column-rule)
@@ -94,17 +84,10 @@
 (add-hook 'swift-mode-hook
           (lambda () (setq-local helm-dash-docsets '("Swift"))))
 
-;; emacs-mac config
-(when (spacemacs/system-is-mac)
-  (setq default-frame-alist '(
-                              (ns-transparent-titlebar . t)
-                              (ns-appearance . dark)
-                              )))
-
 ;; Add support for font ligatures.
 ;; See https://github.com/tonsky/FiraCode/wiki/Emacs-instructions
 (when (window-system)
-  (if (spacemacs/system-is-mac)
+  (if (eq window-system 'mac)
       (mac-auto-operator-composition-mode)
     (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
                    (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")

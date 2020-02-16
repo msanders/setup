@@ -23,62 +23,27 @@
 
 (defconst michaelsanders-ui-packages
   '(
-    all-the-icons
-    editorconfig
-    helm
-    helpful
-    nov
-    nyan-mode
+    ivy
     which-func
-    writeroom-mode
-    yasnippet-snippets
    ))
 
-(defun michaelsanders-ui/init-all-the-icons ()
-  (use-package all-the-icons :ensure t :defer t))
-
-(defun michaelsanders-ui/init-editorconfig ()
-  (use-package editorconfig :ensure t :defer t))
-
-(defun michaelsanders-ui/init-helpful ()
-  (use-package helpful :ensure t :defer t))
-
-(defun michaelsanders-ui/init-nov ()
-  (use-package nov :ensure t :defer t :config
-    (setq nov-text-width 80)))
-
 (defun michaelsanders-ui/init-which-func ()
-  (use-package which-func :ensure t :config
-    (which-func-mode t)))
+  (use-package which-func :ensure t :config (which-func-mode t)))
 
-(defun michaelsanders-ui/init-nyan-mode ()
-  (use-package nyan-mode :ensure t :defer t))
+(defun michaelsanders-ui/post-init-ivy ()
+  (with-eval-after-load 'ivy
+    ;; Use C-w to delete previous word.
+    (define-key ivy-minibuffer-map (kbd "C-w") #'ivy-backward-kill-word)
 
-(defun michaelsanders-ui/init-writeroom-mode ()
-  (use-package writeroom-mode
-    :ensure t
-    :defer t
-    :init (spacemacs/set-leader-keys "aW" #'writeroom-mode)
-  ))
+    ;; Enable fish-style forward completion.
+    (define-key ivy-minibuffer-map (kbd "C-f") #'ivy-alt-done)
 
-(defun michaelsanders-ui/init-yasnippet-snippets ()
-  (use-package yasnippet-snippets :ensure t :defer t :init
-    (autoload 'yasnippet-snippets-initialize "yasnippet-snippets" nil t)
-    (eval-after-load 'yasnippet #'yasnippet-snippets-initialize)))
+    ;; Use RET for continuing completion for a directory, as in ido.
+    (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
 
-(defun michaelsanders-ui/post-init-helm ()
-  (add-hook 'ido-setup-hook
-            (lambda ()
-              (dolist (mapping (list ido-file-dir-completion-map
-                                     ido-file-completion-map))
-                (define-key mapping
-                  (kbd "C-w")
-                  #'ido-delete-backward-word-updir))))
+    ;; Require full ~/ to navigate home.
+    (setq ivy-magic-tilde nil)
 
-  (with-eval-after-load 'helm
-    (ido-mode 1)
-    (helm-mode 1)
-    (add-to-list 'helm-completing-read-handlers-alist
-                 '(find-file-read-only . ido))
-    (setq helm-mini-default-sources '(helm-source-buffers-list
-                                      helm-source-recentf))))
+    ;; Abbreviate buffer list by default.
+    (setq ivy-rich-path-style 'abbrev)
+    (setq ivy-virtual-abbreviate 'abbreviate)))

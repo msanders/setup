@@ -21,5 +21,4 @@
 ;; <https://www.gnu.org/licenses/>.
 ;;
 
-(spacemacs|defvar-company-backends swift-mode)
-(spacemacs|define-jump-handlers swift-mode)
+(spacemacs|define-jump-handlers swift-mode counsel-gtags-dwim)

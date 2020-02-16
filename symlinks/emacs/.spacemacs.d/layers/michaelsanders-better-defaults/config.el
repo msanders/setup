@@ -21,13 +21,17 @@
 ;; <https://www.gnu.org/licenses/>.
 ;;
 
-(setq vc-follow-symlinks t)
-(setq emerge-diff-options "--ignore-all-space")
-(setq magit-repository-directories '("~/src/"))
+;; Allow using right alt key to write symbols.
+(setq-default mac-right-option-modifier nil)
+
+;; Don't end sentences with a double space.
 (setq sentence-end-double-space nil)
+
+;; Automatically follow symlinks.
+(setq vc-follow-symlinks t)
+
+;; Indent with 4 spaces by default.
 (setq-default c-basic-offset 4)
-(setq-default require-final-newline t)
-(setq ycmd-force-semantic-completion t)
 
 ;; Centralize backup location.
 (setq backup-directory-alist '(("~/.spacemacs.d/backups")))
@@ -47,18 +51,10 @@
 
 (add-to-list 'auto-mode-alist
              '(
-               "\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\|Fast\\)file\\)\\'"
+               "\\(?:\\.rb\\|ru\\|rake\\|thor\\|jbuilder\\|gemspec\\|podspec\\|/\\(?:Gem\\|Rake\\|Cap\\|Thor\\|Vagrant\\|Guard\\|Pod\\|Fast\\|Brew\\)file\\)\\'"
                .
                enh-ruby-mode
                ))
-
-;; YouCompleteMe hooks.
-(add-hook 'c++-mode-hook #'michaelsanders-better-defaults/ycmd-init)
-(add-hook 'c-mode-hook #'michaelsanders-better-defaults/ycmd-init)
-(add-hook 'js2-mode-hook #'michaelsanders-better-defaults/ycmd-init)
-(add-hook 'python-mode-hook #'michaelsanders-better-defaults/ycmd-init)
-(add-hook 'swift-mode-hook #'michaelsanders-better-defaults/icmd-init)
-(add-hook 'company-mode-hook #'company-ycmd-setup)
 
 (defun michaelsanders/gtags-env-patch (orig &rest args)
   (if-let* ((project-root (file-truename (locate-dominating-file "." ".git")))
@@ -70,14 +66,18 @@
       (apply orig args)
     (apply orig args)))
 
-(advice-add #'helm-gtags-find-tag :around #'michaelsanders/gtags-env-patch)
-(advice-add #'helm-gtags-dwim :around #'michaelsanders/gtags-env-patch)
-(advice-add #'helm-gtags-find-tag-other-window
+(advice-add #'counsel-gtags-find-reference
             :around
             #'michaelsanders/gtags-env-patch)
-
-(spacemacs|define-jump-handlers swift-mode helm-gtags-dwim)
-(spacemacs|define-jump-handlers rust-mode helm-gtags-dwim)
+(advice-add #'counsel-gtags-find-symbol
+            :around
+            #'michaelsanders/gtags-env-patch)
+(advice-add #'counsel-gtags-find-definition
+            :around
+            #'michaelsanders/gtags-env-patch)
+(advice-add #'counsel-gtags-dwim
+            :around
+            #'michaelsanders/gtags-env-patch)
 
 ;; Workaround from
 ;; https://github.com/syl20bnr/spacemacs/issues/5634#issuecomment-204340185

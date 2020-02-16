@@ -23,11 +23,9 @@
 
 (defconst michaelsanders-swift-packages
   '(
-    company
-    flycheck-swiftlint
-    ggtags
-    helm-gtags
-    swift-playground-mode
+     flycheck-swiftlint
+     swift-playground-mode
+     lsp-sourcekit
    ))
 
 (defun michaelsanders-swift/init-flycheck-swiftlint ()
@@ -41,11 +39,13 @@
 (defun michaelsanders-swift/post-flycheck-swiftlint ()
   (with-eval-after-load 'flycheck (flycheck-swiftlint-setup)))
 
-(defun michaelsanders-swift/post-init-company ()
-  (spacemacs|add-company-hook swift-mode))
-
-(defun michaelsanders-swift/post-init-ggtags ()
-  (add-hook 'swift-mode-local-vars-hook #'spacemacs/ggtags-mode-enable))
-
-(defun michaelsanders-swift/post-init-helm-gtags ()
-  (spacemacs/helm-gtags-define-keys-for-mode #'swift-mode))
+(defun michaelsanders-swift/init-lsp-sourcekit ()
+  (use-package lsp-sourcekit
+    :after lsp-mode
+    :config
+    (let ((swift-toolchain
+           "/Library/Developer/Toolchains/swift-latest.xctoolchain"))
+      (setenv "SOURCEKIT_TOOLCHAIN_PATH" swift-toolchain)
+      (setq lsp-sourcekit-executable
+            (concat swift-toolchain "/usr/bin/sourcekit-lsp")))
+    (add-hook 'swift-mode-hook #'lsp)))
