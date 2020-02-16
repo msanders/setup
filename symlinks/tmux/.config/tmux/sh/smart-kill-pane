@@ -2,9 +2,12 @@
 #
 # Smart confirm-before kill-pane command. Only asks for confirmation when
 # killing a child process.
+#
+# See:
+# https://posts.mksanders.org/simulating-macos-terminal-bindings-in-alacritty
 set -o errexit -o nounset
 
-run() (
+tmux_run() (
     pane_pid="$(tmux list-panes -F "#{pane_active}:#{pane_pid}" |
         grep '^1:' |
         cut -c 3-)"
@@ -26,11 +29,11 @@ main() (
     # Mimic Terminal.app's behavior of always moving one tab to the right
     # unless at the end.
     if [ ! "$pane_count" = 1 ] || [ "$window_count" = 1 ]; then
-        run kill-pane
+        tmux_run kill-pane
     elif [ "$(echo "$window_list" | tail -n1 | cut -c1)" = 1 ]; then
-        run previous-window\; next-window\; kill-pane
+        tmux_run previous-window\; next-window\; kill-pane
     else
-        run next-window\; previous-window\; kill-pane
+        tmux_run next-window\; previous-window\; kill-pane
     fi
 )
 
