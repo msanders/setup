@@ -26,6 +26,9 @@ brew "dockutil"
 # Select default apps for documents and URL schemes on macOS
 brew "duti"
 
+# Maintain consistent coding style between multiple editors
+brew "editorconfig"
+
 # Functional programming language for building browser-based GUIs
 brew "elm"
 
@@ -46,6 +49,18 @@ brew "git"
 
 # Source code tag system
 brew "global"
+
+# Command-line accounting tool
+brew "hledger"
+
+# Command-line, double-entry accounting tool
+brew "ledger"
+
+# Mac App Store command-line interface
+brew "mas"
+
+# Remote terminal application
+brew "mosh"
 
 # Text-based UI library
 brew "ncurses"
@@ -127,6 +142,7 @@ brew "zero-sh/tap/zero"
 
 cask "1password"
 cask "acorn"
+cask "backblaze"
 cask "calibre"
 cask "colorpicker-developer"
 cask "dash"
@@ -157,7 +173,6 @@ cask "spectacle"
 cask "transmission"
 cask "transmit"
 cask "vmware-fusion"
-cask "xscope"
 
 mas "AdGuard for Safari", id: 1440147259
 mas "Amphetamine", id: 937984704
@@ -168,9 +183,10 @@ mas "Haskell", id: 841285201
 mas "Keynote", id: 409183694
 mas "Kindle", id: 405399194
 mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
 mas "PDF Expert", id: 1055273043
+mas "Pages", id: 409201541
 mas "Pixelmator", id: 407963104
 mas "Slack", id: 803453959
+mas "xScope", id: 889428659
 mas "The Unarchiver", id: 425424353
 mas "Xcode", id: 497799835
