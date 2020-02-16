@@ -296,6 +296,7 @@ key_bindings:
   # One-off fix for missing option-as-meta setting.
   # See https://github.com/alacritty/alacritty/issues/62
   - { key: Period,    mods: Alt, chars: "\x1b\x2e" }
+  - { key: Semicolon, mods: Alt | Shift, chars: "\x1b\x3a" }
 
   #
   # macOS bindings for tmux.

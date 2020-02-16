@@ -1,13 +1,11 @@
 #!/bin/sh
 #
-# This is a direct wrapper around `emacsclient` that can be used as a value for
-# $EDITOR. By default it's blocking; to invoke asynchronously, pass -n as shown
-# in the docs for `emacsclient`.
+# This is a direct wrapper around emacsclient that can be used as a value for
+# $EDITOR. It does not use the GUI, and instead always creates a new frame on
+# the CLI.
 set -o errexit -o nounset
 
-if [ $# -lt 1 ]; then
-    echo "Usage: $(basename "$0") <file>" >&2
-    exit 1
-fi
-
-emacsclient --alternate-editor=vim --quiet "$@" 2>/dev/null
+emacsclient --alternate-editor "" \
+            --socket-name=cli \
+            --tty \
+            --quiet "$@" 2>/dev/null

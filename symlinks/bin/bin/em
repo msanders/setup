@@ -1,13 +1,24 @@
 #!/bin/sh
 #
-# This is a convenience wrapper to launch or reuse an Emacs instance to open a
-# given file. It doesn't wait for it to exit, so can't be used as an $EDITOR.
+# This is a convenience wrapper to launch or reuse a GUI Emacs instance to open
+# a given file. It doesn't wait for it to exit, so can't be used as an $EDITOR.
 set -o errexit -o nounset
 
-if ! pgrep -q -- "Emacs"; then
-    open -a Emacs --args "$@"
+abspath() {
+    python -c "import os, sys; print(os.path.abspath(sys.argv[1]))" "$1"
+}
+
+# The --args flag doesn't seem to work properly when Emacs is already
+# running, so first try using emacsclient.
+if emacsclient --no-wait --quiet "$@" 2>/dev/null; then
+    exit
+fi
+
+# Use env -i to avoid polluting $PATH and other environment variables
+# passed to Emacs, which causes warnings in extensions such as
+# exec-path-from-shell.
+if [ $# -eq 0 ]; then
+    env -i open -a Emacs
 else
-    # The --args flag doesn't seem to work properly when Emacs is already
-    # running, so defer to emacsclient instead.
-    emacsclient --no-wait "$@"
+    env -i open -a Emacs --args "$(abspath "$1")"
 fi
