@@ -1,18 +1,26 @@
 #!/bin/sh
+#
+# Generate gtags for repo and place in `.git` directory.
+# See: https://posts.mksanders.org/automatic-gtags-integration-emacs-git
 set -o errexit -o nounset
 
 PATH="/usr/local/bin:$PATH"
 
-(
+main() (
     root_dir="$(git rev-parse --show-toplevel)"
     git_dir="$(git rev-parse --git-dir)"
 
     cd "$root_dir"
     trap 'rm -f GPATH GRTAGS GTAGS gtags.files' EXIT
-    git grep --cached --files-with-matches "" > gtags.files
+
+    # Match non-empty text files, excluding submodules.
+    git grep -I --cached --files-with-matches "" > gtags.files
+
     gtags --gtagslabel=pygments
     rm gtags.files
     mv GPATH GRTAGS GTAGS "$git_dir/"
 
     echo "gtags index created at $git_dir/GTAGS"
 )
+
+main
