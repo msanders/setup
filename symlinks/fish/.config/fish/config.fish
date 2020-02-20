@@ -25,7 +25,8 @@ if status is-login
     set --export LANGUAGE en_US.UTF-8
     set --export LC_ALL en_US.UTF-8
     set --export MANPAGER "sh -c 'col -bx | bat -l man -p'"
-    set --export PATH "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.cask/bin" $PATH
+    set --export PATH "$HOME/bin" "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/.cask/bin" \
+                      "$HOME/.emacs.d/bin" $PATH
     set --export PYENV_ROOT "$HOME/.pyenv"
     set --export SHELLCHECK_OPTS "--external-sources"
 
