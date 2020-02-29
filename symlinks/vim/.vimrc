@@ -159,7 +159,7 @@ vnoremap fd <esc>
 noremap ; :
 noremap \ ;
 
-" Paste yanked text (as opposed to cut text).
+" Paste yanked (as opposed to recently deleted) text.
 noremap gp "0p
 noremap gP "0P
 
@@ -247,6 +247,10 @@ nnoremap <leader>ff :lcd %:p:h<cr>:e<space>
 noremap <c-a> <home>
 noremap <c-e> <end>
 
+" Doom
+nnoremap <leader>bl <c-^>
+nnoremap <leader>` <c-^>
+
 " ### Visual mode
 xnoremap v <esc>
 xmap s S
@@ -261,8 +265,9 @@ autocmd BufRead,BufNewFile *.h nnoremap <buffer> <silent> <leader>fa :call<sid>A
 autocmd BufRead,BufNewFile *.h,*.m set filetype=objc
 autocmd BufRead,BufNewFile *.{c,m,mm,cpp,cc} nnoremap <buffer> <silent> <leader>fa :call<sid>AlternateFile('h')<cr>
 autocmd BufRead,BufNewFile Brewfile,Brewfile.* setlocal filetype=ruby
-autocmd FileType gitconfig,make setlocal noexpandtab
 autocmd FileType fish,javascript,rust,swift,typescript setlocal textwidth=100 colorcolumn=101
+autocmd FileType gitconfig,make setlocal noexpandtab
+autocmd FileType html setlocal textwidth=0
 autocmd FileType ruby,yaml setlocal tabstop=2 shiftwidth=2
 autocmd VimEnter * call s:DirectoryBailout()
 
