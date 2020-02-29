@@ -1,9 +1,10 @@
 Brewfile.lock.json
 run/lib/Grayscale/toggle-grayscale
 run/lib/Grayscale/toggle-grayscale.dSYM
-symlinks/emacs/.spacemacs.d/.spacemacs.env
-symlinks/emacs/.spacemacs.d/backups
-symlinks/emacs/.spacemacs.d/secrets.el
+symlinks/emacs/.config/doom/autoload.el
+symlinks/emacs/.config/doom/config.el
+symlinks/emacs/.config/doom/packages.el
+symlinks/emacs/.config/doom/secrets.el
 symlinks/fish/.config/fish/completions
 symlinks/fish/.config/fish/fish_variables
 symlinks/tmux/.config/tmux/plugins

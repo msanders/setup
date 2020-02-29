@@ -1,0 +1,439 @@
+#+TITLE: Doom Emacs Configuration
+#+AUTHOR: Michael Sanders
+#+EMAIL: michael.sanders@fastmail.com
+
+This file contains my [[github:hlissner/doom-emacs][Doom Emacs]] configuration written in literate programming
+style with org mode. So far I've been impressed with Doom. It's fast, both in
+terms of startup speed and general use, polished, well maintained, and very
+enjoyable to use. The defaults are opinionated, but most have been exactly what
+I needed so there surprisingly isn't much to add here.
+
+* Preamble
+
+Enable lexical binding [[https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#use-lexical-binding-everywhere][by default]].
+
+#+BEGIN_SRC emacs-lisp
+;;; -*- lexical-binding: t; -*-
+#+END_SRC
+
+Start benchmark for user config load time.
+
+#+BEGIN_SRC emacs-lisp
+(setq user-config-start-time (current-time))
+#+END_SRC
+
+* Autoloads
+
+These are exported separately to =$DOOMDIR/autoload.el=.
+
+#+BEGIN_SRC emacs-lisp :tangle autoload.el
+;;; autoload.el -*- lexical-binding: t; -*-
+
+;;;###autoload
+(defun mac-toggle-option-as-meta ()
+  "Toggle option-as-meta setting on macOS."
+  (interactive)
+  (if (eq mac-option-modifier 'none)
+      (progn
+        (setq mac-option-modifier 'meta)
+        (message "macOS option-as-meta behavior enabled."))
+    (setq mac-option-modifier 'none)
+    (message "macOS option-as-meta behavior disabled.")))
+
+;;;###autoload
+(defun fill-comment-or-paragraph (&optional justify)
+  "Fill paragraph or comment at or after point.
+
+Attempts to fill the current paragraph using
+`fill-comment-paragraph' and a `fill-column' value of
+`comment-fill-column', or falls back to `fill-paragraph' if that
+returns nil."
+  (interactive)
+  (or (let ((fill-column (or comment-fill-column fill-column)))
+           (fill-comment-paragraph justify))
+      (fill-paragraph justify)))
+#+END_SRC
+
+* General
+
+Enable jump to source for built-in Elisp functions.
+
+#+BEGIN_SRC emacs-lisp
+(setq find-function-C-source-directory "~/src/etc/emacs/src")
+#+END_SRC
+
+Allow listing projects via Magit.
+
+#+BEGIN_SRC emacs-lisp
+(setq magit-repository-directories '(("~/src/personal" . 1)))
+#+END_SRC
+
+Set full path to git for Magit to improve performance.
+
+#+BEGIN_SRC emacs-lisp
+(setq magit-git-executable "/usr/local/bin/git")
+#+END_SRC
+
+Use Fish for shell mode.
+
+#+BEGIN_SRC emacs-lisp
+(setq explicit-shell-file-name "/usr/local/bin/fish")
+#+END_SRC
+
+Treat underscores as [[https://evil.readthedocs.io/en/latest/faq.html#underscore-is-not-a-word-character][word characters]] for use with evil.
+
+#+BEGIN_SRC emacs-lisp
+(modify-syntax-entry ?_ "w")
+#+END_SRC
+
+Enable Avy across all visible windows.
+
+#+BEGIN_SRC emacs-lisp
+(setq avy-all-windows t)
+#+END_SRC
+
+Reduce delay for showing list of available keybindings after typing a prefix
+key.
+
+#+BEGIN_SRC emacs-lisp
+(setq which-key-idle-delay 0.5)
+#+END_SRC
+
+* Theme
+
+#+BEGIN_SRC emacs-lisp
+(setq doom-font (font-spec :family "Fira Mono" :size 16)
+      doom-theme 'doom-Iosvkem
+      doom-themes-enable-bold nil)
+#+END_SRC
+
+** Banner
+
+Prefer the stock [[file:banners/emacs.png][Emacs splash image]].
+
+#+BEGIN_SRC emacs-lisp
+(setq +doom-dashboard-banner-file
+      (expand-file-name "emacs.png"
+                        (expand-file-name "banners" doom-private-dir)))
+#+END_SRC
+
+** Line numbers
+
+Disable line numbers, which are often slow and not very useful.
+
+#+BEGIN_SRC emacs-lisp
+(setq display-line-numbers-type nil)
+#+END_SRC
+
+** Frame
+
+Use a more generic frame title.
+
+#+BEGIN_SRC emacs-lisp
+(setq frame-title-format '("%b – Emacs")
+      icon-title-format frame-title-format)
+#+END_SRC
+
+Start out in non-native full-screen.
+
+#+BEGIN_SRC emacs-lisp
+(setq initial-frame-alist '((fullscreen . fullboth)))
+#+END_SRC
+
+* Input
+
+Use =fd= to escape from insert mode, as in Spacemacs.
+
+#+BEGIN_SRC emacs-lisp
+(setq evil-escape-key-sequence "fd")
+#+END_SRC
+
+Allow using the right option key on macOS to input special characters. By
+default, Doom sets this to ='meta=.
+
+#+BEGIN_SRC emacs-lisp
+(setq mac-right-option-modifier 'none)
+#+END_SRC
+
+** Column Limits
+
+Set appropriate values for =fill-column=. Note that by default it's
+buffer-local, so =setq-default= is required.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default fill-column 79)
+(setq-hook! (fish-mode rustic-mode swift-mode)
+  comment-fill-column 79
+  fill-column 100)
+(setq-hook! emacs-lisp-mode
+  comment-fill-column 70)
+#+END_SRC
+
+Add support for automatically highlighting long lines via =whitespace-mode=.
+
+#+BEGIN_SRC emacs-lisp
+(setq whitespace-style '(face trailing lines-tail)
+      whitespace-line-column 80)
+
+;; The `whitespace-line-column' variable must be set before activating
+;; `whitespace-mode'. See https://stackoverflow.com/a/11444423
+(add-hook! prog-mode
+  (cond ((memq major-mode '(fish-mode js2-mode rustic-mode swift-mode))
+         (setq-local whitespace-line-column 100))
+        ((eq major-mode 'mhtml-mode)
+         (setq-local whitespace-style '(face trailing))))
+  (whitespace-mode t))
+#+END_SRC
+
+** Key Bindings
+#+BEGIN_SRC emacs-lisp
+(map!
+ ;; Use F2 to toggle option-as-meta behavior.
+ :gn [f2] #'mac-toggle-option-as-meta
+
+ ;; Use `Command-Return' to toggle non-native fullscreen.
+ :gn [s-return] #'toggle-frame-fullscreen
+
+ ;; Use `Command-{' and `Command-}' to switch between tabs.
+ :gn "s-{" #'+workspace/switch-left
+ :gn "s-}" #'+workspace/switch-right
+
+ ;; Override the default `fill-paragraph' binding.
+ :gn "M-q" #'fill-comment-or-paragraph
+
+ ;; Bring back the default of `C-k' to kill line in insert mode.
+ :i "C-k" #'kill-line
+
+ ;; Use `M-/ to expand snippets.
+ :i "M-/" #'yas-expand
+
+ ;; Allow using ; to enter command mode.
+ :nv ";" #'evil-ex
+
+ ;; Use \ for previous ; command.
+ :nv "\\" #'evil-snipe-repeat
+
+ ;; Use | for previous \ command.
+ :nv "|" #'evil-execute-in-emacs-state
+
+ ;; Add two new key bindings, `gp' and `gP' in normal/visual mode to
+ ;; paste yanked (as opposed to recently deleted) text. By default,
+ ;; `p' uses the unnamed register which becomes polluted when
+ ;; modifying existing text.
+ :nv "gp" "\"0p"
+ :nv "gP" "\"0P"
+
+ ;; Use +/- for incrementing/decrementing numbers.
+ :nv "+" #'evil-numbers/inc-at-pt
+ :nv "-" #'evil-numbers/dec-at-pt
+
+ ;; Prefer `C-k' to be used for `kill-line' when using
+ ;; `eval-expression' and `ex' rather than Doom's default of
+ ;; `previous-line'.
+ :map evil-ex-completion-map "C-k" #'kill-line
+ :map read-expression-map
+ "C-k" #'kill-line
+ "C-n" #'next-line-or-history-element
+ "C-p" #'previous-line-or-history-element
+
+ ;; Use `M-n'/`M-p' to jump fields to avoid conflicting with e.g.
+ ;; company mode auto completions.
+ :map yas-keymap "M-n" #'yas-next-field
+ :map yas-keymap "M-p" #'yas-prev-field
+
+ ;; Prefer double-space to invoke `M-x' as in Spacemacs.
+ :leader
+ :desc "Call a command" "SPC" #'counsel-M-x
+
+ ;; Use `SPC-fa' to toggle between header/source files.
+ (:prefix "f"
+   :desc "Find header or source file" "a" #'ff-find-other-file)
+
+ (:prefix "w"
+   ;; Prefer Spacemacs variants for window bindings, mostly due to
+   ;; muscle memory.
+   "/" #'evil-window-vsplit
+   "m" #'doom/window-maximize-buffer
+
+   ;; Use `SPC w g' to toggle golden ratio sizing.
+   "g" #'golden-ratio))
+#+END_SRC
+
+* Completion
+** Company
+
+Decrease idle delay for faster completions. Note: setting this all the way down
+to 0 can cause infinite loops to get spun off during garbage collection in
+completion, so 0.1 is used instead.
+
+#+BEGIN_SRC emacs-lisp
+(setq company-idle-delay 0.1)
+#+END_SRC
+
+Allow selecting match using tab.
+
+#+BEGIN_SRC emacs-lisp
+(after! company
+  (define-key! company-active-map
+    "TAB" #'company-complete-selection
+    [tab] #'company-complete-selection))
+#+END_SRC
+
+** LSP
+
+Disable extraneous/distracting as-you-type error reporting and diagnostics.
+
+#+BEGIN_SRC emacs-lisp
+(setq lsp-flycheck-live-reporting nil
+      lsp-ui-sideline-enable nil)
+#+END_SRC
+
+Disable symbol highlighting to improve performance.
+
+#+BEGIN_SRC emacs-lisp
+(setq lsp-enable-symbol-highlighting nil)
+#+END_SRC
+
+Decrease idle delay to be nearly instantaneous.
+
+#+BEGIN_SRC emacs-lisp
+(setq lsp-idle-delay 0.1)
+#+END_SRC
+
+** Ivy
+
+#+BEGIN_SRC emacs-lisp
+(after! ivy
+  (define-key! ivy-minibuffer-map
+    ;; Enable fish-style forward completion.
+    "C-f" #'ivy-alt-done
+
+    ;; Use RET for continuing completion on a directory, as in ido.
+    "RET" #'ivy-alt-done)
+
+  (setq
+   ;; Allow using / to auto-complete.
+   ivy-magic-slash-non-match-action 'ivy-magic-slash-non-match-cd-selected
+
+   ;; Require full ~/ to navigate home.
+   ivy-magic-tilde nil
+
+   ;; Enable recent files in switch-buffer.
+   ivy-use-virtual-buffers t
+
+   ;; Abbreviate buffer list by default.
+   ivy-rich-path-style 'abbrev
+   ivy-virtual-abbreviate 'abbreviate)
+
+  ;; Disable recent files when switching workspace buffers.
+  (advice-add #'+ivy/switch-workspace-buffer
+              :around
+              (lambda (orig &rest args)
+                (let ((ivy-use-virtual-buffers nil))
+                  (apply orig args)))))
+#+END_SRC
+
+* Org Mode
+
+Prefer =counsel-org-capture= for Doom's =org-capture= CLI command, which has a
+slightly prettier UI.
+
+By default, it allows substring matching across item descriptions, which can
+prevent using the aliases shown in the left-hand column. This is worked around
+below by giving =ivy-read= an initial input of =^=.
+
+#+BEGIN_SRC emacs-lisp
+(setq +org-capture-fn
+      (λ! ()
+          (cl-letf* ((ivy-read-orig
+                      (symbol-function #'ivy-read))
+                     ((symbol-function #'ivy-read)
+                      (doom-rpartial ivy-read-orig :initial-input "^")))
+            (counsel-org-capture))))
+#+END_SRC
+
+Allow cancelling =org-capture= frame via =C-g=.
+
+#+BEGIN_SRC emacs-lisp
+(defadvice! mks--org-capture-open-frame-remap-a (orig-fn &rest args)
+  :around #'+org-capture/open-frame
+  (require 'ivy)
+  (let* ((ivy-minibuffer-map-orig ivy-minibuffer-map)
+         (ivy-minibuffer-map (copy-tree ivy-minibuffer-map-orig)))
+    (define-key ivy-minibuffer-map (kbd "C-g")
+      (λ! ()
+          (delete-frame)
+          (minibuffer-keyboard-quit)))
+    (apply orig-fn args)))
+#+END_SRC
+
+Adjust the =org-capture= frame slightly to hide banner and increase column
+width.
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list '+org-capture-frame-parameters '(width . 100))
+(add-to-list '+org-capture-frame-parameters '(height . 20))
+#+END_SRC
+
+Make =org-mode= bullets prettier.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-ellipsis " ▼ "
+      org-bullets-bullet-list '("☯" "☰" "☱" "☲" "☳" "☴" "☵" "☶" "☷" "☷" "☷")
+      org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
+                          (sequence "⚑ WAITING(w)" "|")
+                          (sequence "|" "✘ CANCELED(c)")))
+#+END_SRC
+
+Set a default directory for org files.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-directory "~/Dropbox/Org/")
+#+END_SRC
+
+* Additional Packages
+
+#+BEGIN_SRC emacs-lisp
+(use-package! elcord :defer t)
+(use-package! golden-ratio :defer t)
+(use-package! fish-mode
+  :defer t
+  :config
+  (set-company-backend! 'fish-mode #'company-fish-shell))
+(use-package! swift-playground-mode
+  :defer t
+  :init
+  (autoload 'swift-playground-global-mode "swift-playground-mode" nil t)
+  (add-hook 'swift-mode-hook #'swift-playground-global-mode))
+#+END_SRC
+
+Declare packages to be installed via ~doom sync~ in =$DOOMDIR/packages.el=.
+
+#+BEGIN_SRC emacs-lisp :tangle packages.el
+;; -*- no-byte-compile: t; -*-
+;;; packages.el
+
+(package! elcord)
+(package! fish-mode)
+(package! golden-ratio)
+(package! swift-playground-mode)
+#+END_SRC
+
+* Closing Ceremony
+
+Load secrets.
+
+#+BEGIN_SRC emacs-lisp
+(load! "secrets.el" doom-emacs-dir t)
+#+END_SRC
+
+End user config load time benchmark.
+
+#+BEGIN_SRC emacs-lisp
+(setq user-config-end-time (float-time (time-subtract (current-time)
+                                                      user-config-start-time)))
+(add-hook 'window-setup-hook
+          (lambda ()
+            (message "User config loaded in %.03fs" user-config-end-time)
+            (message "")) t)
+#+END_SRC
