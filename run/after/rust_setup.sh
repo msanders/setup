@@ -15,4 +15,4 @@ rustup install nightly
 rustup update
 rustup completions fish >"$COMPLETIONS_DIR/rustup.fish"
 rustup component add rls rust-analysis rust-src
-rustup component add rustfmt
+rustup component add rustfmt clippy
