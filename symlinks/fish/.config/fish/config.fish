@@ -20,7 +20,7 @@ if status is-login
     set --export DEVELOPER_DIR "/Applications/Xcode.app/Contents/Developer"
     set --export EDITOR "emc"
     set --export GTAGSLABEL "pygments"
-    set --export HOMEBREW_AUTO_UPDATE_SECS 3600
+    set --export HOMEBREW_AUTO_UPDATE_SECS 86400
     set --export LANG en_US.UTF-8
     set --export LANGUAGE en_US.UTF-8
     set --export LC_ALL en_US.UTF-8
