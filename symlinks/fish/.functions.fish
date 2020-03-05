@@ -14,7 +14,7 @@ function gd  --description "Clone a git repository and switch to it" --argument 
 
     set --local url (/usr/bin/python -c "
 import sys
-if sys.argv[1].startswith('http'):
+if sys.argv[1].startswith('http') or sys.argv[1].startswith('git@'):
     print(sys.argv[1])
 else:
     print('https://github.com/{}'.format(sys.argv[1]))" $repo)
@@ -24,7 +24,7 @@ else:
 import os
 import sys
 from urlparse import urlparse
-if sys.argv[1].startswith('http'):
+if sys.argv[1].startswith('http') or sys.argv[1].startswith('git@'):
     print(os.path.splitext(os.path.split(urlparse(sys.argv[1]).path)[-1])[0])
 else:
     print(os.path.basename(sys.argv[1]))" $repo)
