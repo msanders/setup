@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: Income
+# key: i
+# expand-env: ((yas-indent-line 'fixed))
+# --
+
+${1:`(format-time-string "%Y")`}-${2:`(format-time-string "%m")`}-${3:`(format-time-string "%d")`} ${4:Name}
+    Assets:${5:Checking}  \$${6:0.00}
+    Income:$7
