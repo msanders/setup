@@ -41,6 +41,7 @@ duti -s org.gnu.Emacs net.daringfireball.markdown all
 duti -s org.gnu.Emacs public.c-header all
 duti -s org.gnu.Emacs public.c-plus-plus-source all
 duti -s org.gnu.Emacs public.c-source all
+duti -s org.gnu.Emacs public.comma-separated-values-text all
 duti -s org.gnu.Emacs public.data all
 duti -s org.gnu.Emacs public.json all
 duti -s org.gnu.Emacs public.objective-c-source all
