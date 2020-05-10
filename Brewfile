@@ -113,6 +113,9 @@ brew "swiftformat"
 # Tool to enforce Swift style and conventions
 brew "swiftlint"
 
+# Scripting with easy zero-conf dependency imports
+brew "swift-sh"
+
 # Very fast implementation of tldr in Rust
 brew "tealdeer"
 
