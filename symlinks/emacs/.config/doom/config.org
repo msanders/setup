@@ -281,17 +281,15 @@ Allow selecting match using tab.
 
 ** LSP
 
-Disable extraneous/distracting as-you-type error reporting and diagnostics.
+Disable several extraneous/distracting LSP features to improve performance.
 
 #+BEGIN_SRC emacs-lisp
-(setq lsp-flycheck-live-reporting nil
-      lsp-ui-sideline-enable nil)
-#+END_SRC
-
-Disable symbol highlighting to improve performance.
-
-#+BEGIN_SRC emacs-lisp
-(setq lsp-enable-symbol-highlighting nil)
+(setq lsp-enable-file-watchers nil
+      lsp-enable-indentation nil
+      lsp-enable-semantic-highlighting nil
+      lsp-enable-symbol-highlighting nil
+      lsp-ui-doc-enable nil
+      lsp-ui-sideline-show-hover nil)
 #+END_SRC
 
 Decrease idle delay to be nearly instantaneous.
@@ -379,7 +377,8 @@ Make =org-mode= bullets prettier.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-ellipsis " ▼ "
-      org-bullets-bullet-list '("☯" "☰" "☱" "☲" "☳" "☴" "☵" "☶" "☷" "☷" "☷")
+      org-superstar-headline-bullets-list '("☯" "☰" "☱" "☲" "☳" "☴" "☵" "☶" "☷"
+                                            "☷" "☷")
       org-todo-keywords '((sequence "☛ TODO(t)" "|" "✔ DONE(d)")
                           (sequence "⚑ WAITING(w)" "|")
                           (sequence "|" "✘ CANCELED(c)")))
@@ -419,7 +418,7 @@ Declare packages to be installed via ~doom sync~ in =$DOOMDIR/packages.el=.
 (package! swift-playground-mode)
 #+END_SRC
 
-* Closing Ceremony
+* Epilogue
 
 Load secrets.
 
