@@ -70,7 +70,6 @@ chicon "$SCRIPT_DIR/../lib/Emacs.icns" /Applications/Emacs.app
 
 echo "Installing custom utilities..."
 
-"$SCRIPT_DIR/../lib/Grayscale/install"
 "$SCRIPT_DIR/../lib/KeyBindings/install"
 "$SCRIPT_DIR/../lib/LaunchTerm/install"
 

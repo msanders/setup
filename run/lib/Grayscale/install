@@ -1,9 +1,0 @@
-#!/bin/sh
-set -o errexit -o nounset
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
-rm -f ./toggle-grayscale
-clang -g -Os -std=c11 -Wall -framework ApplicationServices "$SCRIPT_DIR/toggle-grayscale.c" -o "$SCRIPT_DIR/toggle-grayscale"
-cp -p "$SCRIPT_DIR/toggle-grayscale" "$HOME/bin"
-echo "Installed toggle-grayscale."

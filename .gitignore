@@ -1,6 +1,4 @@
 Brewfile.lock.json
-run/lib/Grayscale/toggle-grayscale
-run/lib/Grayscale/toggle-grayscale.dSYM
 symlinks/emacs/.config/doom/autoload.el
 symlinks/emacs/.config/doom/config.el
 symlinks/emacs/.config/doom/packages.el
