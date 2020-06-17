@@ -47,6 +47,9 @@ brew "fzf"
 # Distributed revision control system
 brew "git"
 
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+
 # Source code tag system
 brew "global"
 
@@ -83,6 +86,9 @@ brew "neovim"
 # Platform built on V8 to build network applications
 brew "node"
 
+# Search PDFs for strings matching a regular expression
+brew "pdfgrep"
+
 # Python version management
 brew "pyenv"
 
@@ -91,6 +97,9 @@ brew "ranger"
 
 # Ruby version manager
 brew "rbenv"
+
+# Tools for file renaming
+brew "renameutils"
 
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
@@ -134,6 +143,9 @@ brew "typescript"
 # Internet file retriever
 brew "wget"
 
+# A TUI system monitor written in Rust
+brew "ytop"
+
 # Fast static site generator in a single binary with everything built-in
 brew "zola"
 
@@ -158,12 +170,13 @@ cask "font-fira-mono"
 cask "font-fira-mono-for-powerline"
 cask "gitup"
 cask "gpg-suite"
+cask "hey"
 cask "iina"
 cask "imageoptim"
 cask "lingon-x"
 cask "little-snitch"
-cask "macdown"
 cask "pacifist"
+cask "pine"
 cask "postgres"
 cask "protonvpn"
 cask "qlcolorcode"
