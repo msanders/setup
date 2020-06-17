@@ -26,6 +26,9 @@ Then, in no particular order:
 - Change system colors under System Preferences > General > Access Color &
   Highlight Color.
 
+- Turn off font smoothing under System Preferences > General > Use font
+  smoothing when available.
+
 - Turn off System Preferences > Spotlight > Allow Spotlight Suggestions in Look
   up.
 
@@ -49,6 +52,8 @@ Then, in no particular order:
 - Firefox > about:config > browser.tab.warnOnClose > true.
 
 - Firefox > about:config > toolkit.cosmeticAnimations.enabled > false.
+
+- Firefox > about:config > layout.css.osx-font-smoothing.enable > false.
 
 - Flux > Preferences > Sunset > Normal/Daylight. (I use Night Shift for sunset,
   and Flux for "Bedtime".)
