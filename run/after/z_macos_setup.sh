@@ -16,7 +16,7 @@ fi
 # Originally taken from https://github.com/bdesham/zenburn-terminal
 echo "Setting default Terminal theme..."
 
-open -a Terminal "$SCRIPT_DIR/../lib/Zenburn.terminal"
+open -a Terminal "$SCRIPT_DIR/../lib/assets/Zenburn.terminal"
 sleep 2 # Wait a bit for theme to install.
 osascript -e 'tell application "Terminal"' \
     -e 'set default settings to settings set "Zenburn"' \
@@ -65,8 +65,8 @@ if ! command -v chicon >/dev/null; then
     set +x
 fi
 
-chicon "$SCRIPT_DIR/../lib/Alacritty.icns" /Applications/Alacritty.app
-chicon "$SCRIPT_DIR/../lib/Emacs.icns" /Applications/Emacs.app
+chicon "$SCRIPT_DIR/../lib/assets/Alacritty.icns" /Applications/Alacritty.app
+chicon "$SCRIPT_DIR/../lib/assets/Emacs.icns" /Applications/Emacs.app
 
 echo "Installing custom utilities..."
 
