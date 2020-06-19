@@ -84,8 +84,9 @@ com.apple.dt.Xcode:
   # Show build timer within Xcode UI.
   ShowBuildOperationDuration: true
 
-  # Xcode > Preferences > Fonts & Colors > Theme > San Jose Slides.
-  XCFontAndColorCurrentDarkTheme: "San Jose Slides.xccolortheme"
+  # Xcode > Preferences > Fonts & Colors > Theme > San Jose.
+  XCFontAndColorCurrentTheme: "San Jose.xccolortheme"
+  XCFontAndColorCurrentDarkTheme: "San Jose.xccolortheme"
 
 com.apple.TextEdit:
   # TextEdit > Preferences > New Document > Plain text.
