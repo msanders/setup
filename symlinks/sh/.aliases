@@ -3,6 +3,9 @@
 # Format bash script.
 alias bashfmt="shfmt -s -i=4 -ci -ln=bash"
 
+# Shorthand to use syntax highlighted diff output.
+alias cdiff="sh -c 'diff -u \"\$0\" \"\$1\" | delta'"
+
 # Prefer bat over cat.
 alias cat="bat"
 

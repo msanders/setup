@@ -4,14 +4,17 @@
 [commit]
 	gpgsign = true
 [core]
-	whitespace = trailing-space,space-before-tab
 	excludesfile = ~/.gitignore
+	pager = delta
+	whitespace = trailing-space,space-before-tab
 [credential]
 	helper = osxkeychain
+[delta]
+	syntax-theme = zenburn
 [init]
 	templatedir = ~/.git_template
-[diff]
-	algorithm = histogram
+[interactive]
+    difffilter = delta --color-only
 [difftool]
 	prompt = false
 [merge]
