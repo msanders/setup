@@ -297,6 +297,7 @@ key_bindings:
   # See https://github.com/alacritty/alacritty/issues/62
   - { key: Period,    mods: Alt, chars: "\x1b\x2e" }
   - { key: Semicolon, mods: Alt | Shift, chars: "\x1b\x3a" }
+  - { key: E, mods: Alt, chars: "\x1b\x65" }
 
   #
   # macOS bindings for tmux.
