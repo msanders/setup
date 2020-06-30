@@ -43,6 +43,9 @@ Then, in no particular order:
 - Turn off Firefox > Preferences > Privacy & Security > Firefox Data Collection
   and Use > Allow Firefox to install and run studies.
 
+- Turn on Firefox > Preferences > Privacy & Security > Prevent accessibility
+  services from accessing your browser.
+
 - Set host name under System Preferences > Sharing > Computer Name.
 
 - Mail > Preferences > Composing > Message Format: Plain Text.
