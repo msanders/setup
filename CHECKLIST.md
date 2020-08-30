@@ -38,9 +38,6 @@ Then, in no particular order:
 - Turn off Messages > Edit > Substitutions > Emoji.
 
 - Turn off Firefox > Preferences > Privacy & Security > Firefox Data Collection
-  and Use > Allow Firefox to send technical and interaction data to Mozilla.
-
-- Turn off Firefox > Preferences > Privacy & Security > Firefox Data Collection
   and Use > Allow Firefox to install and run studies.
 
 - Turn on Firefox > Preferences > Privacy & Security > Prevent accessibility
@@ -52,11 +49,15 @@ Then, in no particular order:
 
 - Firefox > View > Toolbars > Customize... > Density > Compact.
 
-- Firefox > about:config > browser.tab.warnOnClose > true.
+- Firefox > Preferences > Privacy & Security > History > Firefox Will > Use
+  custom settings for history.
 
-- Firefox > about:config > toolkit.cosmeticAnimations.enabled > false.
+- Firefox > Preferences > Privacy & Security > History > Remember search and
+  form history > false.
 
-- Firefox > about:config > layout.css.osx-font-smoothing.enable > false.
+- Firefox > about:config > `layout.css.osx-font-smoothing.enable` > false.
+
+- Firefox > about:config > `dom.event.clipboardevents.enabled` > false.
 
 - Flux > Preferences > Sunset > Normal/Daylight. (I use Night Shift for sunset,
   and Flux for "Bedtime".)
