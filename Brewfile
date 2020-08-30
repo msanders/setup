@@ -1,6 +1,7 @@
 #
 # Auto-generated using `brew bundle --dump --describe`.
 #
+tap "homebrew/cask"
 tap "homebrew/cask-fonts"
 tap "railwaycat/emacsmacport"
 tap "zero-sh/tap"
@@ -13,6 +14,9 @@ brew "bat"
 
 # Decentralized dependency manager for Cocoa
 brew "carthage"
+
+# Emacs dependency management
+brew "cask"
 
 # Collection of LLDB commands to assist debugging iOS apps
 brew "chisel"
@@ -41,6 +45,9 @@ brew "exa"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 
+# User-friendly command-line shell for UNIX-like operating systems
+brew "fish"
+
 # Command-line fuzzy finder written in Go
 brew "fzf"
 
@@ -53,8 +60,20 @@ brew "git-delta"
 # Source code tag system
 brew "global"
 
+# OpenGL and OpenGL ES reference compiler for shading languages
+brew "glslang"
+
+# Terminal interface for viewing git repositories
+brew "grv"
+
+# GNU Ubiquitous Intelligent Language for Extensions
+brew "guile"
+
 # Command-line accounting tool
 brew "hledger"
+
+# Haskell source code suggestions
+brew "hlint"
 
 # Command-line, double-entry accounting tool
 brew "ledger"
@@ -68,8 +87,11 @@ brew "mosh"
 # Text-based UI library
 brew "ncurses"
 
-# Terminal interface for viewing git repositories
-brew "grv"
+# Install and debug iPhone apps from the command-line
+brew "ios-deploy"
+
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 
 # International Ispell
 brew "ispell"
@@ -103,6 +125,9 @@ brew "renameutils"
 
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+
+# Experimental Rust compiler front-end for IDEs
+brew "rust-analyzer"
 
 # Intuitive find & replace CLI
 brew "sd"
@@ -143,9 +168,6 @@ brew "typescript"
 # Internet file retriever
 brew "wget"
 
-# A TUI system monitor written in Rust
-brew "ytop"
-
 # Fast static site generator in a single binary with everything built-in
 brew "zola"
 
@@ -157,9 +179,10 @@ brew "zero-sh/tap/zero"
 
 cask "1password"
 cask "acorn"
+cask "alacritty"
 cask "backblaze"
 cask "calibre"
-cask "colorpicker-developer"
+cask "chromium"
 cask "dash"
 cask "discord"
 cask "dropbox"
@@ -170,34 +193,27 @@ cask "font-fira-mono"
 cask "font-fira-mono-for-powerline"
 cask "gitup"
 cask "gpg-suite"
-cask "hey"
 cask "iina"
 cask "imageoptim"
 cask "lingon-x"
 cask "little-snitch"
 cask "pacifist"
 cask "pine"
-cask "postgres"
 cask "protonvpn"
 cask "qlcolorcode"
-cask "qlmarkdown"
 cask "qlstephen"
-cask "quicklook-json"
+cask "rectangle"
 cask "shrinkit"
 cask "sketch"
-cask "spectacle"
 cask "transmission"
 cask "transmit"
-cask "vmware-fusion"
 
-mas "AdGuard for Safari", id: 1440147259
 mas "Amphetamine", id: 937984704
 mas "Cookie", id: 1473091386
 mas "DaisyDisk", id: 411643860
 mas "Fantastical", id: 975937182
 mas "Haskell", id: 841285201
 mas "Keynote", id: 409183694
-mas "Kindle", id: 405399194
 mas "Numbers", id: 409203825
 mas "PDF Expert", id: 1055273043
 mas "Pages", id: 409201541
