@@ -8,17 +8,20 @@ abspath() {
     python -c "import os, sys; print(os.path.abspath(sys.argv[1]))" "$1"
 }
 
-# Use env -i to avoid polluting $PATH and other environment variables
-# passed to Emacs, which causes warnings in extensions such as
-# exec-path-from-shell.
-env -i open -a Emacs
+# The --args flag doesn't work when Emacs is already running, so first try
+# using emacsclient.
+if emacsclient --suppress-output --eval nil 2>/dev/null; then
+    emacsclient --no-wait --quiet "$@"
 
-# The --args flag doesn't seem to work properly when Emacs is already
-# running, so first try using emacsclient.
-if emacsclient --no-wait --quiet "$@" 2>/dev/null; then
-    exit
-fi
-
-if [ $# -gt 0 ]; then
+    # Ensure Emacs becomes active even when prompts are shown.
+    #
+    # env -i is used to avoid polluting $PATH and other environment variables
+    # passed to Emacs, which can cause warnings in extensions such as
+    # exec-path-from-shell.
+    env -i open -a Emacs
+elif [ $# -gt 0 ]; then
     env -i open -a Emacs --args "$(abspath "$1")"
+else
+    env -i open -a Emacs
 fi
+
