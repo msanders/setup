@@ -1,0 +1,44 @@
+#!/usr/bin/swift
+import AppKit
+import Darwin
+
+extension NSWorkspace {
+    func setIcon(fileURL: URL, iconURL: URL?) throws -> Bool {
+        let icon = iconURL.map(NSImage.init)
+        _ = try fileURL.checkResourceIsReachable()
+        _ = try iconURL?.checkResourceIsReachable()
+        return setIcon(icon, forFile: fileURL.relativePath, options: [])
+    }
+}
+
+func main() {
+    if CommandLine.argc != 3 {
+        fputs("Error: Invalid number of arguments.\n", stderr)
+        exit(1)
+    }
+
+    let iconURL: URL? = URL(fileURLWithPath: CommandLine.arguments[1])
+    let fileURL: URL = URL(fileURLWithPath: CommandLine.arguments[2])
+    do {
+        guard try NSWorkspace.shared.setIcon(fileURL: fileURL, iconURL: iconURL) else {
+            fputs("Error: Could not set icon for \(fileURL.relativePath)\n", stderr)
+            exit(1)
+        }
+
+        print("Successfully set icon for \(fileURL.relativePath).")
+    } catch {
+        var statusCode: Int = 1
+        let nsError: NSError = error as NSError
+        if nsError.domain == NSPOSIXErrorDomain {
+            statusCode = nsError.code
+        } else if let underlyingError = nsError.userInfo[NSUnderlyingErrorKey] as? NSError,
+                  underlyingError.domain == NSPOSIXErrorDomain {
+            statusCode = underlyingError.code
+        }
+        fputs("Error: Could not set icon for \(fileURL.relativePath). " +
+              "\(error.localizedDescription)\n", stderr)
+        exit(Int32(statusCode))
+    }
+}
+
+main()

@@ -9,13 +9,7 @@ NSGlobalDomain:
   # Disable press and hold character picker.
   ApplePressAndHoldEnabled: false
 
-  # System Preferences > Keyboard > Key Repeat.
-  KeyRepeat: 1
-
-  # System Preferences > Keyboard > Delay Until Repeat.
-  InitialKeyRepeat: 15
-
-  # Disable smooth scrolling
+  # Disable smooth scrolling.
   NSScrollAnimationEnabled: false
 
 com.apple.desktopservices:
@@ -50,9 +44,6 @@ com.apple.finder:
 
   # Finder > Preferences > Show these items on the desktop > Hard disks.
   ShowHardDrivesOnDesktop: false
-
-  # Finder > View > Show Path Bar.
-  ShowPathbar: true
 
 com.apple.iTunes:
   # iTunes > Preferences > Devices > Prevent iPods, iPhones, and iPads from
@@ -92,31 +83,22 @@ com.apple.TextEdit:
   # TextEdit > Preferences > New Document > Plain text.
   RichText: false
 
+com.apple.Terminal:
+  # Terminal > Secure Keyboard Entry.
+  SecureKeyboardEntry: true
+
+  # Set custom theme as default.
+  "Default Window Settings": Zenburn
+  "Startup Window Settings": Zenburn
+
 com.apple.SoftwareUpdate:
-  # System Preferences > Software Update > Advanced... > Automatically check for
-  # updates.
+  # System Preferences > Software Update > Advanced... > Automatically check
+  # for updates.
   AutomaticCheckEnabled: true
 
   # System Preferences > Software Update > Advanced... > Download new updates
   # when available.
   AutomaticDownload: true
-
-com.flexibits.fantastical2.mac:
-  # Fantastical 2 > Preferences > Appearance > Hide Fantastical in Dock.
-  HideDockIcon: true
-
-  # Fantastical 2 > Preferences > General > Record Shortcut > None.
-  HotKeyEmpty: true
-
-  # Fantastical 2 > Preferences > Advanced > Open maps in: Google Maps.
-  OpenMapsIn: google
-
-  # Fantastical 2 > Preferences > Appearance > Menu bar icon shows: Nothing.
-  StatusItemBadge: StatusItemStyleNone
-
-com.kapeli.dashdoc:
-  # Dash > Preferences > General > Behavior > Show dock icon > Off.
-  showInDock: false
 
 org.gnu.Emacs:
   # Enable natural title bar patch for Emacs.

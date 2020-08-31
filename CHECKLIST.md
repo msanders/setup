@@ -9,6 +9,10 @@ Manual steps that are still done on every new setup:
 
 Then, in no particular order:
 
+- System Preferences > Keyboard > Key Repeat > Fast.
+
+- System Preferences > Keyboard > Delay Until Repeat > Short.
+
 - System Preferences > Keyboard > Modifier Keys... > Caps Lock Key > Control.
 
 - System Preferences > Display > Night Shift > Schedule > Sunset to Sunrise.
