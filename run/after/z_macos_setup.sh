@@ -2,15 +2,26 @@
 set -o errexit -o nounset
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPOS_DIR="$(mktemp -d -t macos_setup_repos)"
 
-if [ ! -d "$HOME/iCloud" ]; then
-    echo "Symlinking iCloud."
+trap 'rm -rf "$REPOS_DIR"' EXIT
+(
+    echo "Installing PAM Touch ID..."
+    cd "$REPOS_DIR"
     set -x
-    ln -s "$HOME/Library/Mobile Documents/com~apple~CloudDocs/" "$HOME/iCloud"
+    git clone https://github.com/Reflejo/pam-touchID.git
+    cd pam-touchID
+    sudo make install
     set +x
-else
-    echo "iCloud directory already linked."
-fi
+
+    cd -
+    echo "Installing PAM Watch ID..."
+    set -x
+    git clone https://github.com/biscuitehh/pam-watchid.git
+    cd pam-watchid
+    sudo make install
+    set +x
+)
 
 # Use a modified version of the Zenburn theme by default in Terminal.app
 # Originally taken from https://github.com/bdesham/zenburn-terminal
