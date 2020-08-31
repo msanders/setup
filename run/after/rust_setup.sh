@@ -16,3 +16,5 @@ rustup update
 rustup completions fish >"$COMPLETIONS_DIR/rustup.fish"
 rustup component add rust-src
 rustup component add rustfmt clippy
+
+cargo install bottom
