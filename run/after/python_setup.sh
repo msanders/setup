@@ -3,20 +3,28 @@ eval "$(pyenv init -)"
 set -o errexit
 
 pyenv install 2.7.18 --skip-existing
-pyenv install 3.6.10 --skip-existing
-pyenv install 3.7.7 --skip-existing
-pyenv install 3.8.3 --skip-existing
+pyenv install 3.6.11 --skip-existing
+pyenv install 3.7.8 --skip-existing
+pyenv install 3.8.5 --skip-existing
 
-install_dependencies() {
-    pip install -U pip setuptools flake8 setuptools-rust autoflake hy yapf \
-        virtualenv pylint importmagic epc python-language-server
+install_common_dependencies() {
+    pip install -U pip setuptools virtualenv pipenv pytest nose pyflakes isort \
+        setuptools-rust
+}
+
+install_py3_dependencies() {
+    pip install -U black
 }
 
 pyenv shell 2.7.18
-install_dependencies
-pyenv shell 3.6.10
-install_dependencies
-pyenv shell 3.7.7
-install_dependencies
-pyenv global 3.8.3
-install_dependencies
+install_common_dependencies
+pyenv shell 3.6.11
+install_common_dependencies
+install_py3_dependencies
+pyenv shell 3.7.8
+install_common_dependencies
+install_py3_dependencies
+pyenv shell 3.8.5
+install_common_dependencies
+install_py3_dependencies
+pyenv global 3.8.5
