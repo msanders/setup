@@ -1,6 +1,7 @@
 #+TITLE: Doom Emacs Configuration
 #+AUTHOR: Michael Sanders
 #+EMAIL: michael.sanders@fastmail.com
+#+PROPERTY: :results silent :comments link
 
 This file contains my [[github:hlissner/doom-emacs][Doom Emacs]] configuration written in literate programming
 style with org mode. So far I've been impressed with Doom. It's fast, both in
@@ -50,8 +51,36 @@ Attempts to fill the current paragraph using
 returns nil."
   (interactive)
   (or (let ((fill-column (or comment-fill-column fill-column)))
-           (fill-comment-paragraph justify))
+        (fill-comment-paragraph justify))
       (fill-paragraph justify)))
+
+;;;###autoload
+(defun org-insert-custom-link (&optional complete-file description)
+  "Insert custom link into org document."
+  (interactive)
+  (org-insert-link complete-file
+                   (read-string "Link: ")
+                   (or description (read-string "Description: "))))
+
+;;;###autoload
+(defun geiser-eval-last-buffer-sexp ()
+  "Eval current buffer in the Geiser REPL and print the result."
+  (interactive)
+  (let ((ret (save-excursion (geiser-eval-buffer nil t nil))))
+    (geiser-eval--retort-result-str ret nil)))
+
+;;;###autoload
+(defun mks--gtags-env-patch (orig &rest args)
+  "Hook to automatically configure GTAGSROOT and GTAGSDBPATH
+environment variables before invoking gtags functions."
+  (if-let* ((project-root (file-truename (locate-dominating-file "." ".git")))
+            (git-dir (expand-file-name ".git" project-root))
+            (process-environment (append
+                                  (list (format "GTAGSROOT=%s" project-root)
+                                        (format "GTAGSDBPATH=%s" git-dir))
+                                  process-environment)))
+      (apply orig args)
+    (apply orig args)))
 #+END_SRC
 
 * General
@@ -101,13 +130,15 @@ key.
 
 * Theme
 
+** Font
+
 #+BEGIN_SRC emacs-lisp
 (setq doom-font (font-spec :family "Fira Mono" :size 16)
       doom-theme 'doom-Iosvkem
       doom-themes-enable-bold nil)
 #+END_SRC
 
-** Banner
+** Dashboard
 
 Prefer the stock [[file:banners/emacs.png][Emacs splash image]].
 
@@ -115,6 +146,15 @@ Prefer the stock [[file:banners/emacs.png][Emacs splash image]].
 (setq +doom-dashboard-banner-file
       (expand-file-name "emacs.png"
                         (expand-file-name "banners" doom-private-dir)))
+#+END_SRC
+
+Disable dashboard when in daemon session.
+
+#+BEGIN_SRC emacs-lisp
+(when (daemonp)
+  (remove-hook 'find-file-hook #'+vc-gutter-init-maybe-h)
+  (remove-hook 'doom-init-ui-hook #'+doom-dashboard-init-h)
+  (setq inhibit-startup-buffer-menu t))
 #+END_SRC
 
 ** Line numbers
@@ -138,6 +178,26 @@ Start out in non-native full-screen.
 
 #+BEGIN_SRC emacs-lisp
 (setq initial-frame-alist '((fullscreen . fullboth)))
+#+END_SRC
+
+** Modeline
+
+#+BEGIN_SRC emacs-lisp
+(use-package nyan-mode :when (display-graphic-p))
+
+(let* ((main-modeline (alist-get :main +modeline-format-alist))
+       (mks-modeline
+        (if (display-graphic-p)
+            (cons
+             (append (butlast (car main-modeline))
+                     '(" " (:eval (list (nyan-create)))))
+             (append '((" %l:%C "))
+                     (cdr main-modeline)))
+          (cons (butlast (car main-modeline))
+                '((" %l:%C ") mode-line-misc-info +modeline-modes)))))
+  (def-modeline! :mks (car mks-modeline) (cdr mks-modeline)))
+
+(set-modeline! :mks 'default)
 #+END_SRC
 
 * Input
@@ -167,22 +227,7 @@ buffer-local, so =setq-default= is required.
   fill-column 100)
 (setq-hook! emacs-lisp-mode
   comment-fill-column 70)
-#+END_SRC
-
-Add support for automatically highlighting long lines via =whitespace-mode=.
-
-#+BEGIN_SRC emacs-lisp
-(setq whitespace-style '(face trailing lines-tail)
-      whitespace-line-column 80)
-
-;; The `whitespace-line-column' variable must be set before activating
-;; `whitespace-mode'. See https://stackoverflow.com/a/11444423
-(add-hook! prog-mode
-  (cond ((memq major-mode '(fish-mode js2-mode rustic-mode swift-mode))
-         (setq-local whitespace-line-column 100))
-        ((eq major-mode 'mhtml-mode)
-         (setq-local whitespace-style '(face trailing))))
-  (whitespace-mode t))
+(add-hook! (prog-mode text-mode) #'display-fill-column-indicator-mode)
 #+END_SRC
 
 ** Key Bindings
@@ -197,6 +242,9 @@ Add support for automatically highlighting long lines via =whitespace-mode=.
  ;; Use `Command-{' and `Command-}' to switch between tabs.
  :gn "s-{" #'+workspace/switch-left
  :gn "s-}" #'+workspace/switch-right
+
+ ;; Automatically save sessions when quitting via `Command-Q'.
+ ;; :gn "s-q" "SPC q Q"
 
  ;; Override the default `fill-paragraph' binding.
  :gn "M-q" #'fill-comment-or-paragraph
@@ -247,16 +295,25 @@ Add support for automatically highlighting long lines via =whitespace-mode=.
 
  ;; Use `SPC-fa' to toggle between header/source files.
  (:prefix "f"
-   :desc "Find header or source file" "a" #'ff-find-other-file)
+  :desc "Find header or source file" "a" #'ff-find-other-file)
 
  (:prefix "w"
-   ;; Prefer Spacemacs variants for window bindings, mostly due to
-   ;; muscle memory.
-   "/" #'evil-window-vsplit
-   "m" #'doom/window-maximize-buffer
+  ;; Prefer Spacemacs variants for window bindings.
+  "/" #'evil-window-vsplit
+  "m" #'doom/window-maximize-buffer
 
-   ;; Use `SPC w g' to toggle golden ratio sizing.
-   "g" #'golden-ratio))
+  ;; Use `SPC w g' to toggle golden ratio sizing.
+  "g" #'golden-ratio)
+
+ :map org-mode-map
+ :localleader
+ (:prefix ("l" . "link")
+  "h" #'org-insert-custom-link)
+
+ :map geiser-mode-map
+ :localleader
+ (:prefix ("e" . "+eval")
+  "E" #'geiser-eval-last-buffer-sexp))
 #+END_SRC
 
 * Completion
@@ -281,21 +338,10 @@ Allow selecting match using tab.
 
 ** LSP
 
-Disable several extraneous/distracting LSP features to improve performance.
-
-#+BEGIN_SRC emacs-lisp
-(setq lsp-enable-file-watchers nil
-      lsp-enable-indentation nil
-      lsp-enable-semantic-highlighting nil
-      lsp-enable-symbol-highlighting nil
-      lsp-ui-doc-enable nil
-      lsp-ui-sideline-show-hover nil)
-#+END_SRC
-
 Decrease idle delay to be nearly instantaneous.
 
 #+BEGIN_SRC emacs-lisp
-(setq lsp-idle-delay 0.1)
+(setq company-idle-delay 0.1)
 #+END_SRC
 
 ** Ivy
@@ -320,15 +366,20 @@ Decrease idle delay to be nearly instantaneous.
    ivy-use-virtual-buffers t
 
    ;; Abbreviate buffer list by default.
-   ivy-rich-path-style 'abbrev
-   ivy-virtual-abbreviate 'abbreviate)
+   ivy-rich-path-style 'relative
+   ivy-virtual-abbreviate 'abbreviate))
+#+END_SRC
 
-  ;; Disable recent files when switching workspace buffers.
-  (advice-add #'+ivy/switch-workspace-buffer
-              :around
-              (lambda (orig &rest args)
-                (let ((ivy-use-virtual-buffers nil))
-                  (apply orig args)))))
+* Gtags
+
+Configure gtags to look in git repo for [[https://posts.mksanders.org/automatic-gtags-integration-emacs-git/][automatically generated index]].
+
+#+BEGIN_SRC emacs-lisp
+(after! counsel-gtags
+  (advice-add #'counsel-gtags-find-reference :around #'mks--gtags-env-patch)
+  (advice-add #'counsel-gtags-find-symbol :around #'mks--gtags-env-patch)
+  (advice-add #'counsel-gtags-find-definition :around #'mks--gtags-env-patch)
+  (advice-add #'counsel-gtags-dwim :around #'mks--gtags-env-patch))
 #+END_SRC
 
 * Org Mode
@@ -392,14 +443,40 @@ Set a default directory for org files.
 
 * Additional Packages
 
+Quit helpful after pushing a navigate to definition button.
+
 #+BEGIN_SRC emacs-lisp
-(use-package! elcord :defer t)
-(use-package! golden-ratio :defer t)
-(use-package! fish-mode
+(defadvice! mks--helpful-navigate-quit-a (&rest _)
+  :after #'helpful--navigate
+  (helpful-kill-buffers))
+#+END_SRC
+
+Automatically start background REPL when using Geiser.
+
+#+BEGIN_SRC emacs-lisp
+(after! geiser-mode
+  (setq geiser-mode-start-repl-p t))
+#+END_SRC
+
+Fix issues formatting code in swift-mode.
+
+#+BEGIN_SRC emacs-lisp
+(after! swift-mode
+  (setq swift-mode:parenthesized-expression-offset 4))
+(after! smartparens
+  (sp-local-pair 'swift-mode "\\(" ")" :when '(sp-in-string-p)))
+#+END_SRC
+
+Autoload additional packages.
+
+#+BEGIN_SRC emacs-lisp
+(use-package elcord :defer t)
+(use-package golden-ratio :defer t)
+(use-package fish-mode
   :defer t
   :config
   (set-company-backend! 'fish-mode #'company-fish-shell))
-(use-package! swift-playground-mode
+(use-package swift-playground-mode
   :defer t
   :init
   (autoload 'swift-playground-global-mode "swift-playground-mode" nil t)
@@ -412,9 +489,11 @@ Declare packages to be installed via ~doom sync~ in =$DOOMDIR/packages.el=.
 ;; -*- no-byte-compile: t; -*-
 ;;; packages.el
 
+(package! counsel-gtags)
 (package! elcord)
 (package! fish-mode)
 (package! golden-ratio)
+(package! nyan-mode)
 (package! swift-playground-mode)
 #+END_SRC
 
@@ -429,10 +508,12 @@ Load secrets.
 End user config load time benchmark.
 
 #+BEGIN_SRC emacs-lisp
-(setq user-config-end-time (float-time (time-subtract (current-time)
-                                                      user-config-start-time)))
+(setq user-config-end-time (float-time (time-subtract
+                                        (current-time)
+                                        user-config-start-time)))
+
 (add-hook 'window-setup-hook
           (lambda ()
             (message "User config loaded in %.03fs" user-config-end-time)
-            (message "")) t)
+            (message "")) 'append)
 #+END_SRC
