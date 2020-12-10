@@ -68,10 +68,13 @@ Then, in no particular order:
 
 - Flux > Preferences > Bedtime > 1200K (max).
 
-- Edit `/etc/pam.d/sudo` to include `auth sufficient pam_watchid.so
-  "reason=execute a command as root"` as the first line and `auth sufficient
-  pam_touchid.so "reason=execute a command as root"` as the second to  enable
-  [PAM Watch ID](https://github.com/biscuitehh/pam-watchid) and [PAM Touch
-  ID](https://github.com/Reflejo/pam-touchID).
+- Edit `/etc/pam.d/sudo` and add the following as the first two lines to enable
+  [PAM Touch ID](https://github.com/Reflejo/pam-touchID) and [PAM Watch
+  ID](https://github.com/biscuitehh/pam-watchid):
+
+```
+auth sufficient pam_touchid.so "reason=execute a command as root"
+auth sufficient pam_watchid.so "reason=execute a command as root"
+```
 
 Some of these are preferably not automated, others weren't possible AFAICT.
